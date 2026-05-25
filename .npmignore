@@ -1,0 +1,15 @@
+src
+.storybook
+node_modules
+storybook-static
+coverage
+*.log
+.eslintrc.cjs
+.prettierrc
+tsconfig*.json
+vite.config.ts
+postcss.config.js
+tailwind.config.ts
+components.json
+bitbucket-pipelines.yml
+.github
