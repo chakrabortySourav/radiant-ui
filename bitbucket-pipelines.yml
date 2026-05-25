@@ -1,0 +1,52 @@
+image: node:20
+
+definitions:
+  caches:
+    npm: ~/.npm
+  steps:
+    - step: &install
+        name: Install
+        caches: [npm]
+        script:
+          - npm ci
+        artifacts:
+          - node_modules/**
+
+    - step: &quality
+        name: Lint + Typecheck + Test
+        caches: [npm]
+        script:
+          - npm ci
+          - npm run lint
+          - npm run typecheck
+          - npm run test
+
+    - step: &build
+        name: Build library
+        caches: [npm]
+        script:
+          - npm ci
+          - npm run build
+        artifacts:
+          - dist/**
+
+pipelines:
+  pull-requests:
+    "**":
+      - step: *quality
+      - step: *build
+
+  branches:
+    main:
+      - step: *quality
+      - step: *build
+
+  tags:
+    "v*":
+      - step: *quality
+      - step: *build
+      - step:
+          name: Publish git tag artifact
+          script:
+            - echo "Tag $BITBUCKET_TAG built. Consumers install with"
+            - echo "  npm install git+ssh://git@bitbucket.org/company/ui-library.git#$BITBUCKET_TAG"
