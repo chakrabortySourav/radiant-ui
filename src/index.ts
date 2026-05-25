@@ -5,6 +5,9 @@
  *   import "@company/ui-library/styles.css";
  */
 
+// Bundled stylesheet — ensures `dist/styles.css` is emitted on build.
+import "./globals.css";
+
 // Components
 export * from "./components";
 
