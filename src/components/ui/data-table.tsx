@@ -270,7 +270,6 @@ export function DataTable<TData, TValue>({
                   onClick={
                     onRowClick ? () => onRowClick(row.original) : undefined
                   }
-                  className={onRowClick ? "cursor-pointer" : undefined}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
