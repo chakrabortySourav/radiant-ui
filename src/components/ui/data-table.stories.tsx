@@ -1,0 +1,104 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { DataTable, type ColumnDef } from "./data-table";
+import { Badge } from "./badge";
+import { Checkbox } from "./checkbox";
+
+type Payment = {
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
+};
+
+const data: Payment[] = [
+  { id: "m5gr84i9", amount: 316, status: "success", email: "ken99@yahoo.com" },
+  { id: "3u1reuv4", amount: 242, status: "success", email: "abe45@gmail.com" },
+  { id: "derv1ws0", amount: 837, status: "processing", email: "monserrat44@gmail.com" },
+  { id: "5kma53ae", amount: 874, status: "success", email: "silas22@gmail.com" },
+  { id: "bhqecj4p", amount: 721, status: "failed", email: "carmella@hotmail.com" },
+  { id: "p4xu8s2k", amount: 145, status: "pending", email: "jane.doe@acme.com" },
+  { id: "q8d2n9wq", amount: 512, status: "success", email: "john@acme.com" },
+  { id: "x7v3b1nc", amount: 99, status: "processing", email: "lisa@example.com" },
+  { id: "h2k9j4ll", amount: 1250, status: "success", email: "mark@example.com" },
+  { id: "n0p3w8qa", amount: 60, status: "failed", email: "alex@example.com" },
+  { id: "y6c7v8b9", amount: 480, status: "pending", email: "sam@example.com" },
+];
+
+const statusVariant: Record<Payment["status"], "default" | "secondary" | "destructive" | "outline"> = {
+  success: "default",
+  processing: "secondary",
+  pending: "outline",
+  failed: "destructive",
+};
+
+const columns: ColumnDef<Payment>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(v) => row.toggleSelected(!!v)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  { accessorKey: "email", header: "Email" },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <Badge variant={statusVariant[row.original.status]}>{row.original.status}</Badge>
+    ),
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: ({ row }) =>
+      new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+        row.original.amount,
+      ),
+  },
+];
+
+const meta: Meta<typeof DataTable<Payment, unknown>> = {
+  title: "UI/DataTable",
+  component: DataTable,
+};
+export default meta;
+type Story = StoryObj<typeof DataTable<Payment, unknown>>;
+
+export const Basic: Story = {
+  render: () => (
+    <DataTable columns={columns} data={data} searchColumn="email" searchPlaceholder="Filter emails..." />
+  ),
+};
+
+export const NoToolbar: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={data}
+      enableColumnVisibility={false}
+    />
+  ),
+};
+
+export const NoPagination: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={data.slice(0, 4)}
+      searchColumn="email"
+      enablePagination={false}
+    />
+  ),
+};
