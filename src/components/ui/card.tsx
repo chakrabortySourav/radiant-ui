@@ -42,3 +42,42 @@ export const CardFooter = React.forwardRef<HTMLDivElement, DivProps>((props, ref
   <div ref={ref} className="flex items-center p-6 pt-0" {...stripStyleProps(props)} />
 ));
 CardFooter.displayName = "CardFooter";
+
+/**
+ * MediaCard — compact horizontal card with a square thumbnail on the left
+ * and a title + meta line on the right. Style is locked.
+ */
+export interface MediaCardProps
+  extends LockedProps<React.HTMLAttributes<HTMLDivElement>> {
+  thumbnailSrc: string;
+  thumbnailAlt?: string;
+  title: React.ReactNode;
+  meta?: React.ReactNode;
+}
+
+export const MediaCard = React.forwardRef<HTMLDivElement, MediaCardProps>(
+  ({ thumbnailSrc, thumbnailAlt = "", title, meta, ...props }, ref) => (
+    <div
+      ref={ref}
+      className="flex items-center gap-3 rounded-xl border bg-card p-2 pr-4 text-card-foreground shadow-sm transition-colors hover:bg-accent/30"
+      {...stripStyleProps(props)}
+    >
+      <div className="h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
+        <img
+          src={thumbnailSrc}
+          alt={thumbnailAlt}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-sm font-semibold leading-tight">{title}</div>
+        {meta && (
+          <div className="mt-0.5 truncate text-xs text-muted-foreground">{meta}</div>
+        )}
+      </div>
+    </div>
+  ),
+);
+MediaCard.displayName = "MediaCard";
+CardFooter.displayName = "CardFooter";
