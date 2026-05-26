@@ -218,9 +218,36 @@ export function DataTable<TData, TValue>({
 
   const isInteractiveCol = (id: string) => id === SELECT_COL_ID || id === ACTIONS_COL_ID;
 
+  const showToolbar =
+    !!searchColumn || (enableColumnVisibility && columnVisibilityPlacement === "toolbar");
+
+  const columnsDropdown = enableColumnVisibility ? (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm">
+          Columns <ChevronDown />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {table
+          .getAllColumns()
+          .filter((c) => c.getCanHide())
+          .map((column) => (
+            <DropdownMenuCheckboxItem
+              key={column.id}
+              checked={column.getIsVisible()}
+              onCheckedChange={(v) => column.toggleVisibility(!!v)}
+            >
+              {column.id}
+            </DropdownMenuCheckboxItem>
+          ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ) : null;
+
   return (
     <div className="w-full space-y-4" {...safe}>
-      {(searchColumn || enableColumnVisibility) && (
+      {showToolbar && (
         <div className="flex items-center gap-2">
           {searchColumn && (
             <Input
@@ -231,33 +258,14 @@ export function DataTable<TData, TValue>({
               }
             />
           )}
-          {enableColumnVisibility && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  Columns <ChevronDown />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((c) => c.getCanHide())
-                  .map((column) => (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(v) => column.toggleVisibility(!!v)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+          {enableColumnVisibility && columnVisibilityPlacement === "toolbar" && columnsDropdown}
         </div>
       )}
 
-      <div className="rounded-md border">
+      <div className="relative rounded-md border">
+        {enableColumnVisibility && columnVisibilityPlacement === "header" && (
+          <div className="absolute right-2 top-2 z-10">{columnsDropdown}</div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (
