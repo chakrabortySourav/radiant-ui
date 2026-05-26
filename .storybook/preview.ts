@@ -4,9 +4,18 @@ import "../src/globals.css";
 import { UIProvider } from "../src/providers/ui-provider";
 
 const preview: Preview = {
+  tags: ["autodocs"],
   parameters: {
     controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
     backgrounds: { disable: true },
+    docs: {
+      source: {
+        type: "dynamic",
+        language: "tsx",
+        excludeDecorators: true,
+      },
+      toc: true,
+    },
   },
   globalTypes: {
     theme: {
