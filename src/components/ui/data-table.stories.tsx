@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DataTable, type ColumnDef } from "./data-table";
+import { DataTable, badgeCell, type ColumnDef } from "./data-table";
 import { Badge } from "./badge";
 
 type Payment = {
@@ -121,4 +121,47 @@ export const NoPagination: Story = {
       enablePagination={false}
     />
   ),
+};
+
+/**
+ * Columns dropdown placed at the top-right corner of the table; toolbar/filter hidden.
+ * Also demonstrates the `badgeCell` helper for status columns and a row action
+ * that's disabled conditionally.
+ */
+export const HeaderColumnsNoFilter: Story = {
+  render: () => {
+    const cols: ColumnDef<Payment>[] = [
+      { accessorKey: "email", header: "Email" },
+      {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => badgeCell(row.original.status, statusVariant),
+      },
+      {
+        accessorKey: "amount",
+        header: "Amount",
+        cell: ({ row }) =>
+          new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+            row.original.amount,
+          ),
+      },
+    ];
+    return (
+      <DataTable
+        columns={cols}
+        data={data}
+        columnVisibilityPlacement="header"
+        enableRowSelection
+        rowActions={[
+          { label: "Edit", onClick: (r) => console.log("edit", r.id) },
+          {
+            label: "Delete",
+            separatorBefore: true,
+            onClick: (r) => console.log("delete", r.id),
+            disabled: (r) => r.status === "processing" || r.status === "success",
+          },
+        ]}
+      />
+    );
+  },
 };

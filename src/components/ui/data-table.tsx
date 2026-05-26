@@ -17,6 +17,7 @@ import {
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
+import { Badge } from "./badge";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Input } from "./input";
@@ -71,6 +72,27 @@ export interface DataTableProps<TData, TValue>
   rowActions?: DataTableRowAction<TData>[];
   /** Label shown at the top of the actions dropdown. Defaults to "Actions". */
   rowActionsLabel?: string;
+
+  /**
+   * Where to render the column visibility dropdown.
+   * - "toolbar" (default): inline with the search input above the table.
+   * - "header": floats above the top-right corner of the table; the toolbar
+   *   (and search input) is hidden.
+   */
+  columnVisibilityPlacement?: "toolbar" | "header";
+}
+
+/**
+ * Helper to render a value as a Badge using a variant map.
+ * Use inside a column `cell` to avoid writing the JSX manually.
+ *
+ *   cell: ({ row }) => badgeCell(row.original.status, statusVariants)
+ */
+export function badgeCell<K extends string>(
+  value: K,
+  variants: Record<K, "default" | "secondary" | "destructive" | "outline">,
+) {
+  return <Badge variant={variants[value]}>{value}</Badge>;
 }
 
 const SELECT_COL_ID = "__select__";
@@ -89,6 +111,7 @@ export function DataTable<TData, TValue>({
   onRowClick,
   rowActions,
   rowActionsLabel = "Actions",
+  columnVisibilityPlacement = "toolbar",
   ...rest
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -195,9 +218,36 @@ export function DataTable<TData, TValue>({
 
   const isInteractiveCol = (id: string) => id === SELECT_COL_ID || id === ACTIONS_COL_ID;
 
+  const showToolbar =
+    !!searchColumn || (enableColumnVisibility && columnVisibilityPlacement === "toolbar");
+
+  const columnsDropdown = enableColumnVisibility ? (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm">
+          Columns <ChevronDown />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {table
+          .getAllColumns()
+          .filter((c) => c.getCanHide())
+          .map((column) => (
+            <DropdownMenuCheckboxItem
+              key={column.id}
+              checked={column.getIsVisible()}
+              onCheckedChange={(v) => column.toggleVisibility(!!v)}
+            >
+              {column.id}
+            </DropdownMenuCheckboxItem>
+          ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ) : null;
+
   return (
     <div className="w-full space-y-4" {...safe}>
-      {(searchColumn || enableColumnVisibility) && (
+      {showToolbar && (
         <div className="flex items-center gap-2">
           {searchColumn && (
             <Input
@@ -208,33 +258,14 @@ export function DataTable<TData, TValue>({
               }
             />
           )}
-          {enableColumnVisibility && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  Columns <ChevronDown />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((c) => c.getCanHide())
-                  .map((column) => (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(v) => column.toggleVisibility(!!v)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+          {enableColumnVisibility && columnVisibilityPlacement === "toolbar" && columnsDropdown}
         </div>
       )}
 
-      <div className="rounded-md border">
+      <div className="relative rounded-md border">
+        {enableColumnVisibility && columnVisibilityPlacement === "header" && (
+          <div className="absolute right-2 top-2 z-10">{columnsDropdown}</div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (
