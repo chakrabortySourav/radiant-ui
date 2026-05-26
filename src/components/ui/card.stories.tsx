@@ -8,7 +8,7 @@ type Story = StoryObj<typeof Card>;
 
 export const Basic: Story = {
   render: () => (
-    <Card className="max-w-sm">
+    <div className="max-w-sm"><Card>
       <CardHeader>
         <CardTitle>Project status</CardTitle>
         <CardDescription>Latest deploy succeeded.</CardDescription>
@@ -17,6 +17,6 @@ export const Basic: Story = {
       <CardFooter>
         <Button>View dashboard</Button>
       </CardFooter>
-    </Card>
+    </Card></div>
   ),
 };
