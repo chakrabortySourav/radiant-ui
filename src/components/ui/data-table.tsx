@@ -92,9 +92,6 @@ export function badgeCell<K extends string>(
   value: K,
   variants: Record<K, "default" | "secondary" | "destructive" | "outline">,
 ) {
-  // Imported lazily to avoid circular type issues in some consumers.
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { Badge } = require("./badge") as typeof import("./badge");
   return <Badge variant={variants[value]}>{value}</Badge>;
 }
 
