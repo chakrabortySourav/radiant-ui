@@ -82,17 +82,44 @@ export interface DataTableProps<TData, TValue>
   columnVisibilityPlacement?: "toolbar" | "header";
 }
 
+type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
+
 /**
- * Helper to render a value as a Badge using a variant map.
- * Use inside a column `cell` to avoid writing the JSX manually.
+ * Built-in variant mapping for common status-like strings. Used as the default
+ * when no `variants` map is passed to `badgeCell`.
+ */
+export const defaultBadgeVariants: Record<string, BadgeVariant> = {
+  success: "default",
+  active: "default",
+  completed: "default",
+  approved: "default",
+  done: "default",
+  processing: "secondary",
+  pending: "outline",
+  inactive: "outline",
+  draft: "outline",
+  failed: "destructive",
+  error: "destructive",
+  rejected: "destructive",
+  cancelled: "destructive",
+};
+
+/**
+ * Helper to render a value as a Badge. Pass an optional variant map; otherwise
+ * a built-in mapping covers common statuses (success/pending/failed/...).
  *
- *   cell: ({ row }) => badgeCell(row.original.status, statusVariants)
+ *   cell: ({ row }) => badgeCell(row.original.status)
+ *   cell: ({ row }) => badgeCell(row.original.status, { custom: "secondary" })
  */
 export function badgeCell<K extends string>(
   value: K,
-  variants: Record<K, "default" | "secondary" | "destructive" | "outline">,
+  variants?: Partial<Record<K, BadgeVariant>>,
 ) {
-  return <Badge variant={variants[value]}>{value}</Badge>;
+  const variant =
+    (variants as Record<string, BadgeVariant> | undefined)?.[value] ??
+    defaultBadgeVariants[value.toLowerCase?.() ?? value] ??
+    "outline";
+  return <Badge variant={variant}>{value}</Badge>;
 }
 
 const SELECT_COL_ID = "__select__";
