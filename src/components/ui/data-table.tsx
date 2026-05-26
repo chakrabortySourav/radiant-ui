@@ -17,6 +17,7 @@ import {
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
+import { Badge } from "./badge";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Input } from "./input";
