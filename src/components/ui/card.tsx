@@ -48,7 +48,7 @@ CardFooter.displayName = "CardFooter";
  * and a title + meta line on the right. Style is locked.
  */
 export interface MediaCardProps
-  extends LockedProps<React.HTMLAttributes<HTMLDivElement>> {
+  extends Omit<LockedProps<React.HTMLAttributes<HTMLDivElement>>, "title"> {
   thumbnailSrc: string;
   thumbnailAlt?: string;
   title: React.ReactNode;
