@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DataTable, type ColumnDef } from "./data-table";
 import { Badge } from "./badge";
-import { Checkbox } from "./checkbox";
 
 type Payment = {
   id: string;
@@ -32,25 +31,6 @@ const statusVariant: Record<Payment["status"], "default" | "secondary" | "destru
 };
 
 const columns: ColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(v) => row.toggleSelected(!!v)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   { accessorKey: "email", header: "Email" },
   {
     accessorKey: "status",
@@ -82,14 +62,54 @@ export const Basic: Story = {
   ),
 };
 
-export const NoToolbar: Story = {
+export const WithSelection: Story = {
   render: () => (
     <DataTable
       columns={columns}
       data={data}
-      enableColumnVisibility={false}
+      searchColumn="email"
+      enableRowSelection
+      onSelectionChange={(rows) => console.log("selected:", rows)}
     />
   ),
+};
+
+export const WithRowClick: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={data}
+      searchColumn="email"
+      enableRowSelection
+      onRowClick={(row) => alert(`Clicked ${row.email}`)}
+      onSelectionChange={(rows) => console.log("selected:", rows)}
+    />
+  ),
+};
+
+export const WithRowActions: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={data}
+      searchColumn="email"
+      enableRowSelection
+      rowActions={[
+        { label: "Copy email", onClick: (r) => navigator.clipboard.writeText(r.email) },
+        { label: "View details", onClick: (r) => alert(JSON.stringify(r, null, 2)) },
+        {
+          label: "Delete",
+          separatorBefore: true,
+          onClick: (r) => console.log("delete", r.id),
+          disabled: (r) => r.status === "processing",
+        },
+      ]}
+    />
+  ),
+};
+
+export const NoToolbar: Story = {
+  render: () => <DataTable columns={columns} data={data} enableColumnVisibility={false} />,
 };
 
 export const NoPagination: Story = {
