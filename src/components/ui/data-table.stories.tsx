@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DataTable, type ColumnDef } from "./data-table";
+import { DataTable, badgeCell, type ColumnDef } from "./data-table";
 import { Badge } from "./badge";
 
 type Payment = {
