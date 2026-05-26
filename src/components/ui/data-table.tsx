@@ -71,6 +71,30 @@ export interface DataTableProps<TData, TValue>
   rowActions?: DataTableRowAction<TData>[];
   /** Label shown at the top of the actions dropdown. Defaults to "Actions". */
   rowActionsLabel?: string;
+
+  /**
+   * Where to render the column visibility dropdown.
+   * - "toolbar" (default): inline with the search input above the table.
+   * - "header": floats above the top-right corner of the table; the toolbar
+   *   (and search input) is hidden.
+   */
+  columnVisibilityPlacement?: "toolbar" | "header";
+}
+
+/**
+ * Helper to render a value as a Badge using a variant map.
+ * Use inside a column `cell` to avoid writing the JSX manually.
+ *
+ *   cell: ({ row }) => badgeCell(row.original.status, statusVariants)
+ */
+export function badgeCell<K extends string>(
+  value: K,
+  variants: Record<K, "default" | "secondary" | "destructive" | "outline">,
+) {
+  // Imported lazily to avoid circular type issues in some consumers.
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { Badge } = require("./badge") as typeof import("./badge");
+  return <Badge variant={variants[value]}>{value}</Badge>;
 }
 
 const SELECT_COL_ID = "__select__";
