@@ -1,10 +1,11 @@
 import * as React from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import type { DateRange } from "react-day-picker";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { Button } from "./button";
+import { buttonVariants } from "./button";
 import { Calendar } from "./calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Popover, PopoverTrigger } from "./popover";
 import { cn } from "@/lib/utils";
 
 type CommonProps = {
@@ -13,6 +14,58 @@ type CommonProps = {
   dateFormat?: string;
   align?: "start" | "center" | "end";
 };
+
+function CalendarPopoverContent({
+  align = "start",
+  children,
+}: {
+  align?: "start" | "center" | "end";
+  children: React.ReactNode;
+}) {
+  return (
+    <PopoverPrimitive.Portal>
+      <PopoverPrimitive.Content
+        align={align}
+        sideOffset={4}
+        className="z-50 w-auto rounded-md border bg-popover p-0 text-popover-foreground shadow-md outline-none"
+      >
+        {children}
+      </PopoverPrimitive.Content>
+    </PopoverPrimitive.Portal>
+  );
+}
+
+function TriggerButton({
+  disabled,
+  placeholder,
+  label,
+  hasValue,
+  width,
+}: {
+  disabled?: boolean;
+  placeholder: string;
+  label: React.ReactNode;
+  hasValue: boolean;
+  width: string;
+}) {
+  return (
+    <PopoverTrigger asChild>
+      <button
+        type="button"
+        disabled={disabled}
+        className={cn(
+          buttonVariants({ variant: "outline" }),
+          width,
+          "justify-start text-left font-normal",
+          !hasValue && "text-muted-foreground",
+        )}
+      >
+        <CalendarIcon className="mr-2 h-4 w-4" />
+        {hasValue ? label : placeholder}
+      </button>
+    </PopoverTrigger>
+  );
+}
 
 export interface DatePickerProps extends CommonProps {
   value?: Date;
@@ -29,23 +82,16 @@ export function DatePicker({
 }: DatePickerProps) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          disabled={disabled}
-          className={cn(
-            "w-[260px] justify-start text-left font-normal",
-            !value && "text-muted-foreground",
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, dateFormat) : placeholder}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent align={align} className="w-auto p-0">
+      <TriggerButton
+        disabled={disabled}
+        placeholder={placeholder}
+        hasValue={!!value}
+        label={value ? format(value, dateFormat) : ""}
+        width="w-[260px]"
+      />
+      <CalendarPopoverContent align={align}>
         <Calendar mode="single" selected={value} onSelect={onChange} autoFocus />
-      </PopoverContent>
+      </CalendarPopoverContent>
     </Popover>
   );
 }
@@ -67,25 +113,18 @@ export function DateRangePicker({
     ? value.to
       ? `${format(value.from, dateFormat)} – ${format(value.to, dateFormat)}`
       : format(value.from, dateFormat)
-    : placeholder;
+    : "";
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          disabled={disabled}
-          className={cn(
-            "w-[300px] justify-start text-left font-normal",
-            !value?.from && "text-muted-foreground",
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {label}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent align={align} className="w-auto p-0">
+      <TriggerButton
+        disabled={disabled}
+        placeholder={placeholder}
+        hasValue={!!value?.from}
+        label={label}
+        width="w-[300px]"
+      />
+      <CalendarPopoverContent align={align}>
         <Calendar
           mode="range"
           selected={value}
@@ -93,7 +132,7 @@ export function DateRangePicker({
           numberOfMonths={2}
           autoFocus
         />
-      </PopoverContent>
+      </CalendarPopoverContent>
     </Popover>
   );
 }
@@ -118,27 +157,20 @@ export function DateMultiPicker({
       ? value.length <= 2
         ? value.map((d) => format(d, dateFormat)).join(", ")
         : `${value.length} dates selected`
-      : placeholder;
+      : "";
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          disabled={disabled}
-          className={cn(
-            "w-[260px] justify-start text-left font-normal",
-            (!value || value.length === 0) && "text-muted-foreground",
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {label}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent align={align} className="w-auto p-0">
+      <TriggerButton
+        disabled={disabled}
+        placeholder={placeholder}
+        hasValue={!!value && value.length > 0}
+        label={label}
+        width="w-[260px]"
+      />
+      <CalendarPopoverContent align={align}>
         <Calendar mode="multiple" selected={value} onSelect={onChange} max={max} autoFocus />
-      </PopoverContent>
+      </CalendarPopoverContent>
     </Popover>
   );
 }
