@@ -25,7 +25,7 @@ Switch.displayName = "Switch";
 export type SegmentedOption = {
   value: string;
   label?: string;
-  icon?: React.ComponentType<{ className?: string }>;
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement> & { className?: string }>;
 };
 
 export interface SegmentedSwitchProps {
