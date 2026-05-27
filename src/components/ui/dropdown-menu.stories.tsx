@@ -51,40 +51,37 @@ export const Basic: Story = {
 
 /** Items with checkboxes (multi-select). */
 export const WithCheckboxes: Story = {
-  render: () => {
-    const Demo = () => {
-      const [state, setState] = React.useState({ status: true, activity: false, panel: true });
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">View options</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem
-              checked={state.status}
-              onCheckedChange={(v) => setState((s) => ({ ...s, status: !!v }))}
-            >
-              Status bar
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={state.activity}
-              onCheckedChange={(v) => setState((s) => ({ ...s, activity: !!v }))}
-            >
-              Activity bar
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={state.panel}
-              onCheckedChange={(v) => setState((s) => ({ ...s, panel: !!v }))}
-            >
-              Panel
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    };
-    return <Demo />;
+  render: function Render() {
+    const [state, setState] = React.useState({ status: true, activity: false, panel: true });
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">View options</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuCheckboxItem
+            checked={state.status}
+            onCheckedChange={(v) => setState((s) => ({ ...s, status: !!v }))}
+          >
+            Status bar
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={state.activity}
+            onCheckedChange={(v) => setState((s) => ({ ...s, activity: !!v }))}
+          >
+            Activity bar
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={state.panel}
+            onCheckedChange={(v) => setState((s) => ({ ...s, panel: !!v }))}
+          >
+            Panel
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
   },
 };
 
