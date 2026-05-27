@@ -45,32 +45,29 @@ export const AllTypes: Story = {
 
 /** Phone-number input with consumer-controlled formatting. */
 export const PhoneFormatted: Story = {
-  render: () => {
-    const Demo = () => {
-      const [phone, setPhone] = React.useState("");
-      const format = (raw: string) => {
-        const d = raw.replace(/\D/g, "").slice(0, 10);
-        const a = d.slice(0, 3),
-          b = d.slice(3, 6),
-          c = d.slice(6, 10);
-        if (d.length > 6) return `(${a}) ${b}-${c}`;
-        if (d.length > 3) return `(${a}) ${b}`;
-        if (d.length > 0) return `(${a}`;
-        return "";
-      };
-      return (
-        <div style={{ display: "grid", gap: 8, maxWidth: 320 }}>
-          <FormattedInput
-            value={phone}
-            onValueChange={(v) => setPhone(v.replace(/\D/g, ""))}
-            format={format}
-            placeholder="(555) 555-5555"
-          />
-          <small style={{ opacity: 0.6 }}>Raw value: {phone || "(empty)"}</small>
-        </div>
-      );
+  render: function Render() {
+    const [phone, setPhone] = React.useState("");
+    const format = (raw: string) => {
+      const d = raw.replace(/\D/g, "").slice(0, 10);
+      const a = d.slice(0, 3),
+        b = d.slice(3, 6),
+        c = d.slice(6, 10);
+      if (d.length > 6) return `(${a}) ${b}-${c}`;
+      if (d.length > 3) return `(${a}) ${b}`;
+      if (d.length > 0) return `(${a}`;
+      return "";
     };
-    return <Demo />;
+    return (
+      <div style={{ display: "grid", gap: 8, maxWidth: 320 }}>
+        <FormattedInput
+          value={phone}
+          onValueChange={(v) => setPhone(v.replace(/\D/g, ""))}
+          format={format}
+          placeholder="(555) 555-5555"
+        />
+        <small style={{ opacity: 0.6 }}>Raw value: {phone || "(empty)"}</small>
+      </div>
+    );
   },
 };
 
