@@ -140,7 +140,7 @@ export const SelectedCheckRight: Story = {
 
 /** Dropdown with a search input that filters items. */
 export const WithSearch: Story = {
-  render: () => {
+  render: function Render() {
     const all = [
       "Alice Johnson",
       "Bob Williams",
@@ -150,53 +150,50 @@ export const WithSearch: Story = {
       "Fiona Gallagher",
       "George Costanza",
     ];
-    const Demo = () => {
-      const [query, setQuery] = React.useState("");
-      const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Assign to…</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <div
+    const [query, setQuery] = React.useState("");
+    const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">Assign to…</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              borderBottom: "1px solid hsl(var(--border))",
+              padding: "8px",
+              marginBottom: 4,
+            }}
+          >
+            <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+            <input
+              placeholder="Search people..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                borderBottom: "1px solid hsl(var(--border))",
-                padding: "8px",
-                marginBottom: 4,
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: 14,
               }}
-            >
-              <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
-              <input
-                placeholder="Search people..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: 14,
-                }}
-              />
-            </div>
-            <div style={{ maxHeight: 240, overflow: "auto" }}>
-              {filtered.length ? (
-                filtered.map((n) => <DropdownMenuItem key={n}>{n}</DropdownMenuItem>)
-              ) : (
-                <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
-                  No results.
-                </div>
-              )}
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    };
-    return <Demo />;
+            />
+          </div>
+          <div style={{ maxHeight: 240, overflow: "auto" }}>
+            {filtered.length ? (
+              filtered.map((n) => <DropdownMenuItem key={n}>{n}</DropdownMenuItem>)
+            ) : (
+              <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
+                No results.
+              </div>
+            )}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
   },
 };
 
