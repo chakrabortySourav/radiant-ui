@@ -61,32 +61,101 @@ InputGroup.displayName = "InputGroup";
  *   />
  */
 export type FormattedInputProps = LockedProps<
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange">
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "defaultValue">
 > & {
-  value: string;
-  onValueChange: (raw: string) => void;
   /**
-   * Transform the raw value into the display string. Returning `undefined`
-   * (or nothing) falls back to the raw value, so consumers can pass partial
-   * formatters without TypeScript complaining about a missing return.
+   * Controlled raw value (digits/letters only, no mask characters).
+   * Omit to use the component uncontrolled.
    */
-  format?: (raw: string) => string | undefined | void;
-  /** Strip the display string back to the raw value before storing. */
-  parse?: (display: string) => string;
+  value?: string;
+  /** Initial raw value for uncontrolled usage. */
+  defaultValue?: string;
+  /** Called with the raw value (mask characters stripped) whenever it changes. */
+  onValueChange?: (raw: string) => void;
+  /**
+   * Mask pattern. Tokens:
+   *   `#` → any digit (0-9)
+   *   `A` → any letter (a-z, A-Z)
+   *   `*` → any character
+   * Everything else is treated as a literal.
+   *
+   *   format="(###) ###-####"      → (555) 123-4567
+   *   format="##/##/####"          → 12/31/2026
+   *   format="AAA-####"            → ABC-1234
+   */
+  format?: string;
 };
 
+const MASK_TOKENS: Record<string, RegExp> = {
+  "#": /\d/,
+  "9": /\d/,
+  A: /[A-Za-z]/,
+  "*": /./,
+};
+
+/** Apply a mask pattern to a raw string; returns the formatted display. */
+function applyMask(raw: string, mask: string): string {
+  let out = "";
+  let i = 0;
+  for (const m of mask) {
+    if (i >= raw.length) break;
+    const re = MASK_TOKENS[m];
+    if (re) {
+      if (re.test(raw[i])) {
+        out += raw[i];
+        i++;
+      } else {
+        // skip invalid character
+        i++;
+      }
+    } else {
+      out += m;
+      // if user typed the literal, consume it
+      if (raw[i] === m) i++;
+    }
+  }
+  return out;
+}
+
+/** Strip a masked display string back to its raw tokens. */
+function stripMask(display: string, mask: string): string {
+  let raw = "";
+  let mi = 0;
+  for (const ch of display) {
+    // advance past literals in the mask
+    while (mi < mask.length && !MASK_TOKENS[mask[mi]] && mask[mi] === ch) {
+      mi++;
+    }
+    if (mi >= mask.length) break;
+    const re = MASK_TOKENS[mask[mi]];
+    if (re && re.test(ch)) {
+      raw += ch;
+      mi++;
+    }
+  }
+  return raw;
+}
+
 export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(
-  ({ value, onValueChange, format, parse, type = "text", ...props }, ref) => {
-    const formatted = format ? format(value) : value;
-    const display = typeof formatted === "string" ? formatted : value;
+  (
+    { value, defaultValue, onValueChange, format, type = "text", ...props },
+    ref,
+  ) => {
+    const isControlled = value !== undefined;
+    const [internal, setInternal] = React.useState(defaultValue ?? "");
+    const raw = isControlled ? (value as string) : internal;
+
+    const display = format ? applyMask(raw, format) : raw;
+
     return (
       <input
         ref={ref}
         type={type}
         value={display}
         onChange={(e) => {
-          const raw = parse ? parse(e.target.value) : e.target.value;
-          onValueChange(raw);
+          const next = format ? stripMask(e.target.value, format) : e.target.value;
+          if (!isControlled) setInternal(next);
+          onValueChange?.(next);
         }}
         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         {...stripStyleProps(props)}
