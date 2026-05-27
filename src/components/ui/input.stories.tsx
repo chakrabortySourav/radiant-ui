@@ -73,29 +73,26 @@ export const PhoneFormatted: Story = {
 
 /** Credit-card style group separator using FormattedInput. */
 export const CardNumberFormatted: Story = {
-  render: () => {
-    const Demo = () => {
-      const [card, setCard] = React.useState("");
-      const format = (raw: string) =>
-        raw
-          .replace(/\D/g, "")
-          .slice(0, 16)
-          .replace(/(.{4})/g, "$1 ")
-          .trim();
-      return (
-        <div style={{ display: "grid", gap: 8, maxWidth: 320 }}>
-          <FormattedInput
-            value={card}
-            onValueChange={(v) => setCard(v.replace(/\D/g, ""))}
-            format={format}
-            placeholder="4242 4242 4242 4242"
-            inputMode="numeric"
-          />
-          <small style={{ opacity: 0.6 }}>Raw: {card || "(empty)"}</small>
-        </div>
-      );
-    };
-    return <Demo />;
+  render: function Render() {
+    const [card, setCard] = React.useState("");
+    const format = (raw: string) =>
+      raw
+        .replace(/\D/g, "")
+        .slice(0, 16)
+        .replace(/(.{4})/g, "$1 ")
+        .trim();
+    return (
+      <div style={{ display: "grid", gap: 8, maxWidth: 320 }}>
+        <FormattedInput
+          value={card}
+          onValueChange={(v) => setCard(v.replace(/\D/g, ""))}
+          format={format}
+          placeholder="4242 4242 4242 4242"
+          inputMode="numeric"
+        />
+        <small style={{ opacity: 0.6 }}>Raw: {card || "(empty)"}</small>
+      </div>
+    );
   },
 };
 
