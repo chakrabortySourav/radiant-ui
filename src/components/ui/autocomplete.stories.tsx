@@ -20,37 +20,31 @@ const frameworks: AutocompleteOption[] = [
 ];
 
 export const Basic: Story = {
-  render: () => {
-    const Demo = () => {
-      const [value, setValue] = React.useState("");
-      return (
-        <div style={{ width: 320 }}>
-          <Autocomplete
-            options={frameworks}
-            value={value}
-            onChange={setValue}
-            placeholder="Select framework..."
-          />
-          <p style={{ marginTop: 8, fontSize: 12, opacity: 0.6 }}>
-            Selected: {value || "(none)"}
-          </p>
-        </div>
-      );
-    };
-    return <Demo />;
+  render: function Render() {
+    const [value, setValue] = React.useState("");
+    return (
+      <div style={{ width: 320 }}>
+        <Autocomplete
+          options={frameworks}
+          value={value}
+          onChange={setValue}
+          placeholder="Select framework..."
+        />
+        <p style={{ marginTop: 8, fontSize: 12, opacity: 0.6 }}>
+          Selected: {value || "(none)"}
+        </p>
+      </div>
+    );
   },
 };
 
 export const WithInitial: Story = {
-  render: () => {
-    const Demo = () => {
-      const [value, setValue] = React.useState("remix");
-      return (
-        <div style={{ width: 320 }}>
-          <Autocomplete options={frameworks} value={value} onChange={setValue} />
-        </div>
-      );
-    };
-    return <Demo />;
+  render: function Render() {
+    const [value, setValue] = React.useState("remix");
+    return (
+      <div style={{ width: 320 }}>
+        <Autocomplete options={frameworks} value={value} onChange={setValue} />
+      </div>
+    );
   },
 };

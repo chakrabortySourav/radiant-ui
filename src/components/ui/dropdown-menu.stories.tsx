@@ -51,40 +51,37 @@ export const Basic: Story = {
 
 /** Items with checkboxes (multi-select). */
 export const WithCheckboxes: Story = {
-  render: () => {
-    const Demo = () => {
-      const [state, setState] = React.useState({ status: true, activity: false, panel: true });
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">View options</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem
-              checked={state.status}
-              onCheckedChange={(v) => setState((s) => ({ ...s, status: !!v }))}
-            >
-              Status bar
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={state.activity}
-              onCheckedChange={(v) => setState((s) => ({ ...s, activity: !!v }))}
-            >
-              Activity bar
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={state.panel}
-              onCheckedChange={(v) => setState((s) => ({ ...s, panel: !!v }))}
-            >
-              Panel
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    };
-    return <Demo />;
+  render: function Render() {
+    const [state, setState] = React.useState({ status: true, activity: false, panel: true });
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">View options</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuCheckboxItem
+            checked={state.status}
+            onCheckedChange={(v) => setState((s) => ({ ...s, status: !!v }))}
+          >
+            Status bar
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={state.activity}
+            onCheckedChange={(v) => setState((s) => ({ ...s, activity: !!v }))}
+          >
+            Activity bar
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={state.panel}
+            onCheckedChange={(v) => setState((s) => ({ ...s, panel: !!v }))}
+          >
+            Panel
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
   },
 };
 
@@ -118,35 +115,32 @@ export const WithLeftIcons: Story = {
 
 /** Single-select dropdown where the selected option shows a check on the right. */
 export const SelectedCheckRight: Story = {
-  render: () => {
+  render: function Render() {
     const options = ["Low", "Medium", "High", "Urgent"];
-    const Demo = () => {
-      const [value, setValue] = React.useState("Medium");
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Priority: {value}</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Priority</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {options.map((opt) => (
-              <DropdownMenuItem key={opt} onSelect={() => setValue(opt)}>
-                <span style={{ flex: 1 }}>{opt}</span>
-                {value === opt && <Check style={{ marginLeft: 8, height: 16, width: 16 }} />}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    };
-    return <Demo />;
+    const [value, setValue] = React.useState("Medium");
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">Priority: {value}</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Priority</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {options.map((opt) => (
+            <DropdownMenuItem key={opt} onSelect={() => setValue(opt)}>
+              <span style={{ flex: 1 }}>{opt}</span>
+              {value === opt && <Check style={{ marginLeft: 8, height: 16, width: 16 }} />}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
   },
 };
 
 /** Dropdown with a search input that filters items. */
 export const WithSearch: Story = {
-  render: () => {
+  render: function Render() {
     const all = [
       "Alice Johnson",
       "Bob Williams",
@@ -156,53 +150,50 @@ export const WithSearch: Story = {
       "Fiona Gallagher",
       "George Costanza",
     ];
-    const Demo = () => {
-      const [query, setQuery] = React.useState("");
-      const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Assign to…</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <div
+    const [query, setQuery] = React.useState("");
+    const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">Assign to…</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              borderBottom: "1px solid hsl(var(--border))",
+              padding: "8px",
+              marginBottom: 4,
+            }}
+          >
+            <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+            <input
+              placeholder="Search people..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                borderBottom: "1px solid hsl(var(--border))",
-                padding: "8px",
-                marginBottom: 4,
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: 14,
               }}
-            >
-              <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
-              <input
-                placeholder="Search people..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: 14,
-                }}
-              />
-            </div>
-            <div style={{ maxHeight: 240, overflow: "auto" }}>
-              {filtered.length ? (
-                filtered.map((n) => <DropdownMenuItem key={n}>{n}</DropdownMenuItem>)
-              ) : (
-                <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
-                  No results.
-                </div>
-              )}
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    };
-    return <Demo />;
+            />
+          </div>
+          <div style={{ maxHeight: 240, overflow: "auto" }}>
+            {filtered.length ? (
+              filtered.map((n) => <DropdownMenuItem key={n}>{n}</DropdownMenuItem>)
+            ) : (
+              <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
+                No results.
+              </div>
+            )}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
   },
 };
 
