@@ -77,7 +77,8 @@ export type FormattedInputProps = LockedProps<
 
 export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(
   ({ value, onValueChange, format, parse, type = "text", ...props }, ref) => {
-    const display = format ? format(value) : value;
+    const formatted = format ? format(value) : value;
+    const display = typeof formatted === "string" ? formatted : value;
     return (
       <input
         ref={ref}
