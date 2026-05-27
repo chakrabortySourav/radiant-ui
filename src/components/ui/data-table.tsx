@@ -80,6 +80,13 @@ export interface DataTableProps<TData, TValue>
    *   (and search input) is hidden.
    */
   columnVisibilityPlacement?: "toolbar" | "header";
+
+  /**
+   * When enabled, each row exposes a `group/row` class so cells can use
+   * Tailwind `group-hover/row:` utilities to react to row hover (e.g. show
+   * action buttons only on hover).
+   */
+  enableGroupHover?: boolean;
 }
 
 type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
