@@ -1,8 +1,8 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Bell, BellOff, Moon, Sun, Wifi, WifiOff } from "lucide-react";
+import { Grid3x3, List } from "lucide-react";
 import { Switch } from "./switch";
-import { Label } from "./label";
+import { cn } from "@/lib/utils";
 
 const meta: Meta<typeof Switch> = { title: "UI/Switch", component: Switch };
 export default meta;
@@ -11,63 +11,121 @@ type Story = StoryObj<typeof Switch>;
 export const Basic: Story = { render: () => <Switch /> };
 export const Checked: Story = { render: () => <Switch defaultChecked /> };
 
-/** Switch with a text label next to it. */
-export const WithText: Story = {
+/* ------------------------------------------------------------------ */
+/* Segmented switch — pill with two options, sliding thumb behind the */
+/* active one. Supports icon-only, text-only, and icon+text content.  */
+/* ------------------------------------------------------------------ */
+
+type Side = "left" | "right";
+type SegmentedOption = {
+  value: string;
+  label?: string;
+  icon?: React.ComponentType<{ className?: string }>;
+};
+
+function SegmentedSwitch({
+  options,
+  value,
+  onChange,
+  size = "md",
+}: {
+  options: [SegmentedOption, SegmentedOption];
+  value: string;
+  onChange: (v: string) => void;
+  size?: "sm" | "md";
+}) {
+  const active: Side = value === options[0].value ? "left" : "right";
+  const pad = size === "sm" ? "p-0.5" : "p-1";
+  const itemPad = size === "sm" ? "px-2.5 py-1 text-xs" : "px-3.5 py-1.5 text-sm";
+  return (
+    <div
+      role="radiogroup"
+      className={cn(
+        "relative inline-flex items-center rounded-full bg-muted",
+        pad,
+      )}
+    >
+      {/* sliding thumb */}
+      <span
+        aria-hidden
+        className="absolute top-1 bottom-1 rounded-full bg-background shadow-sm transition-all duration-200"
+        style={{
+          left: active === "left" ? 4 : "50%",
+          right: active === "right" ? 4 : "50%",
+        }}
+      />
+      {options.map((opt) => {
+        const Icon = opt.icon;
+        const isActive = opt.value === value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            role="radio"
+            aria-checked={isActive}
+            onClick={() => onChange(opt.value)}
+            className={cn(
+              "relative z-10 inline-flex items-center justify-center gap-1.5 rounded-full font-medium transition-colors",
+              itemPad,
+              isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {Icon ? <Icon className="h-4 w-4" /> : null}
+            {opt.label ? <span>{opt.label}</span> : null}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Segmented switch with icons only (e.g. grid / list view toggle). */
+export const SegmentedIcon: Story = {
   render: function Render() {
-    const [on, setOn] = React.useState(true);
+    const [view, setView] = React.useState("grid");
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <Switch id="airplane" checked={on} onCheckedChange={setOn} />
-        <Label htmlFor="airplane">Airplane mode</Label>
-      </div>
+      <SegmentedSwitch
+        value={view}
+        onChange={setView}
+        options={[
+          { value: "grid", icon: Grid3x3 },
+          { value: "list", icon: List },
+        ]}
+      />
     );
   },
 };
 
-/** Switch flanked by icons that reflect the current state (sun / moon). */
-export const WithIcon: Story = {
+/** Segmented switch with text labels only (e.g. date range). */
+export const SegmentedText: Story = {
   render: function Render() {
-    const [dark, setDark] = React.useState(false);
+    const [range, setRange] = React.useState("30");
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <Sun
-          style={{ height: 16, width: 16, opacity: dark ? 0.4 : 1, transition: "opacity 150ms" }}
-        />
-        <Switch checked={dark} onCheckedChange={setDark} aria-label="Toggle dark mode" />
-        <Moon
-          style={{ height: 16, width: 16, opacity: dark ? 1 : 0.4, transition: "opacity 150ms" }}
-        />
-      </div>
+      <SegmentedSwitch
+        value={range}
+        onChange={setRange}
+        options={[
+          { value: "7", label: "7 Days" },
+          { value: "30", label: "30 Days" },
+        ]}
+      />
     );
   },
 };
 
-/** Switch with both an icon and a text label that update with state. */
-export const WithIconAndText: Story = {
+/** Segmented switch with both icon and text. */
+export const SegmentedIconText: Story = {
   render: function Render() {
-    const [notify, setNotify] = React.useState(true);
-    const [wifi, setWifi] = React.useState(true);
+    const [view, setView] = React.useState("grid");
     return (
-      <div style={{ display: "grid", gap: 12 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Switch id="notify" checked={notify} onCheckedChange={setNotify} />
-          {notify ? (
-            <Bell style={{ height: 16, width: 16 }} />
-          ) : (
-            <BellOff style={{ height: 16, width: 16, opacity: 0.6 }} />
-          )}
-          <Label htmlFor="notify">{notify ? "Notifications on" : "Notifications off"}</Label>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Switch id="wifi" checked={wifi} onCheckedChange={setWifi} />
-          {wifi ? (
-            <Wifi style={{ height: 16, width: 16 }} />
-          ) : (
-            <WifiOff style={{ height: 16, width: 16, opacity: 0.6 }} />
-          )}
-          <Label htmlFor="wifi">{wifi ? "Wi-Fi connected" : "Wi-Fi off"}</Label>
-        </div>
-      </div>
+      <SegmentedSwitch
+        value={view}
+        onChange={setView}
+        options={[
+          { value: "grid", label: "Grid", icon: Grid3x3 },
+          { value: "list", label: "List", icon: List },
+        ]}
+      />
     );
   },
 };
