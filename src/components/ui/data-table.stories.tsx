@@ -59,7 +59,28 @@ type Story = StoryObj<typeof DataTable<Payment, unknown>>;
 // Shared snippets shown in the Docs "Show code" panel. Storybook's auto-source
 // serializes inline functions as `() => {}`; providing explicit source.code
 // keeps the displayed snippet copy-pastable.
-const sharedColumnsSnippet = `const statusVariant = {
+const sharedColumnsSnippet = `type Payment = {
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
+};
+
+const data: Payment[] = [
+  { id: "m5gr84i9", amount: 316, status: "success", email: "ken99@yahoo.com" },
+  { id: "3u1reuv4", amount: 242, status: "success", email: "abe45@gmail.com" },
+  { id: "derv1ws0", amount: 837, status: "processing", email: "monserrat44@gmail.com" },
+  { id: "5kma53ae", amount: 874, status: "success", email: "silas22@gmail.com" },
+  { id: "bhqecj4p", amount: 721, status: "failed", email: "carmella@hotmail.com" },
+  { id: "p4xu8s2k", amount: 145, status: "pending", email: "jane.doe@acme.com" },
+  { id: "q8d2n9wq", amount: 512, status: "success", email: "john@acme.com" },
+  { id: "x7v3b1nc", amount: 99, status: "processing", email: "lisa@example.com" },
+  { id: "h2k9j4ll", amount: 1250, status: "success", email: "mark@example.com" },
+  { id: "n0p3w8qa", amount: 60, status: "failed", email: "alex@example.com" },
+  { id: "y6c7v8b9", amount: 480, status: "pending", email: "sam@example.com" },
+];
+
+const statusVariant = {
   success: "default",
   processing: "secondary",
   pending: "outline",
