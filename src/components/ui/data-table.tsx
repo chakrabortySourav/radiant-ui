@@ -333,6 +333,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  groupHover={enableGroupHover}
                   onClick={
                     onRowClick ? () => onRowClick(row.original) : undefined
                   }
