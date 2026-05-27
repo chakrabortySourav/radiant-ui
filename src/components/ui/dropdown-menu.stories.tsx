@@ -27,7 +27,6 @@ import {
   DropdownMenuPortal,
 } from "./dropdown-menu";
 import { Button } from "./button";
-import { Input } from "./input";
 
 const meta: Meta<typeof DropdownMenu> = { title: "UI/DropdownMenu", component: DropdownMenu };
 export default meta;
@@ -60,7 +59,7 @@ export const WithCheckboxes: Story = {
           <DropdownMenuTrigger asChild>
             <Button variant="outline">View options</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
+          <DropdownMenuContent>
             <DropdownMenuLabel>Appearance</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuCheckboxItem
@@ -96,21 +95,21 @@ export const WithLeftIcons: Story = {
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Account</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" /> Profile
+          <User style={{ marginRight: 8, height: 16, width: 16 }} /> Profile
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <CreditCard className="mr-2 h-4 w-4" /> Billing
+          <CreditCard style={{ marginRight: 8, height: 16, width: 16 }} /> Billing
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" /> Settings
+          <Settings style={{ marginRight: 8, height: 16, width: 16 }} /> Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" /> Log out
+          <LogOut style={{ marginRight: 8, height: 16, width: 16 }} /> Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -128,13 +127,13 @@ export const SelectedCheckRight: Story = {
           <DropdownMenuTrigger asChild>
             <Button variant="outline">Priority: {value}</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-48">
+          <DropdownMenuContent>
             <DropdownMenuLabel>Priority</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {options.map((opt) => (
               <DropdownMenuItem key={opt} onSelect={() => setValue(opt)}>
-                <span>{opt}</span>
-                {value === opt && <Check className="ml-auto h-4 w-4" />}
+                <span style={{ flex: 1 }}>{opt}</span>
+                {value === opt && <Check style={{ marginLeft: 8, height: 16, width: 16 }} />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -165,21 +164,38 @@ export const WithSearch: Story = {
           <DropdownMenuTrigger asChild>
             <Button variant="outline">Assign to…</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-64 p-0">
-            <div className="flex items-center gap-2 border-b px-2 py-2">
-              <Search className="h-4 w-4 opacity-50" />
-              <Input
+          <DropdownMenuContent>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                borderBottom: "1px solid hsl(var(--border))",
+                padding: "8px",
+                marginBottom: 4,
+              }}
+            >
+              <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+              <input
                 placeholder="Search people..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="h-8 border-0 focus-visible:ring-0"
+                style={{
+                  flex: 1,
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                  fontSize: 14,
+                }}
               />
             </div>
-            <div className="max-h-60 overflow-auto p-1">
+            <div style={{ maxHeight: 240, overflow: "auto" }}>
               {filtered.length ? (
                 filtered.map((n) => <DropdownMenuItem key={n}>{n}</DropdownMenuItem>)
               ) : (
-                <div className="p-3 text-center text-sm text-muted-foreground">No results.</div>
+                <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
+                  No results.
+                </div>
               )}
             </div>
           </DropdownMenuContent>
@@ -197,28 +213,28 @@ export const MultiLevel: Story = {
       <DropdownMenuTrigger asChild>
         <Button variant="outline">More actions</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent>
         <DropdownMenuItem>
-          <Plus className="mr-2 h-4 w-4" /> New file
+          <Plus style={{ marginRight: 8, height: 16, width: 16 }} /> New file
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Mail className="mr-2 h-4 w-4" /> Invite by email
+          <Mail style={{ marginRight: 8, height: 16, width: 16 }} /> Invite by email
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
-            <Plus className="mr-2 h-4 w-4" /> Share
+            <Plus style={{ marginRight: 8, height: 16, width: 16 }} /> Share
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
               <DropdownMenuItem>
-                <Github className="mr-2 h-4 w-4" /> GitHub
+                <Github style={{ marginRight: 8, height: 16, width: 16 }} /> GitHub
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Twitter className="mr-2 h-4 w-4" /> Twitter
+                <Twitter style={{ marginRight: 8, height: 16, width: 16 }} /> Twitter
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Facebook className="mr-2 h-4 w-4" /> Facebook
+                <Facebook style={{ marginRight: 8, height: 16, width: 16 }} /> Facebook
               </DropdownMenuItem>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>More…</DropdownMenuSubTrigger>
