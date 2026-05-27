@@ -8,6 +8,9 @@ import { Calendar } from "./calendar";
 import { Popover, PopoverTrigger } from "./popover";
 import { cn } from "@/lib/utils";
 
+export { addDays } from "date-fns";
+export type { DateRange } from "react-day-picker";
+
 type CommonProps = {
   placeholder?: string;
   disabled?: boolean;
