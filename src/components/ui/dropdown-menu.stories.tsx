@@ -243,3 +243,83 @@ export const MultiLevel: Story = {
     </DropdownMenu>
   ),
 };
+
+/** Multi-select "Assign to" dropdown with search + checkboxes. Menu stays open while selecting. */
+export const AssignToMultiSelect: Story = {
+  render: function Render() {
+    const all = [
+      "Alice Johnson",
+      "Bob Williams",
+      "Charlie Brown",
+      "Diana Prince",
+      "Ethan Hunt",
+      "Fiona Gallagher",
+      "George Costanza",
+    ];
+    const [query, setQuery] = React.useState("");
+    const [selected, setSelected] = React.useState<string[]>([]);
+    const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+    const toggle = (n: string) =>
+      setSelected((s) => (s.includes(n) ? s.filter((x) => x !== n) : [...s, n]));
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">
+            Assign to{selected.length ? ` (${selected.length})` : "…"}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          // Prevent the search input from being auto-focused away by Radix
+          onCloseAutoFocus={(e) => e.preventDefault()}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              borderBottom: "1px solid hsl(var(--border))",
+              padding: 8,
+              marginBottom: 4,
+            }}
+            // Stop Radix from treating typing as menu typeahead
+            onKeyDown={(e) => e.stopPropagation()}
+          >
+            <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+            <input
+              autoFocus
+              placeholder="Search people..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: 14,
+              }}
+            />
+          </div>
+          <div style={{ maxHeight: 240, overflow: "auto" }}>
+            {filtered.length ? (
+              filtered.map((n) => (
+                <DropdownMenuCheckboxItem
+                  key={n}
+                  checked={selected.includes(n)}
+                  // Keep the menu open after each toggle
+                  onSelect={(e) => e.preventDefault()}
+                  onCheckedChange={() => toggle(n)}
+                >
+                  {n}
+                </DropdownMenuCheckboxItem>
+              ))
+            ) : (
+              <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
+                No results.
+              </div>
+            )}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  },
+};
