@@ -281,8 +281,13 @@ export const AssignToMultiSelect: Story = {
               padding: 8,
               marginBottom: 4,
             }}
-            // Stop Radix from treating typing as menu typeahead
-            onKeyDown={(e) => e.stopPropagation()}
+            // Let arrow keys / Enter / Escape bubble to Radix for menu navigation,
+            // but stop typing keys so they don't trigger Radix typeahead.
+            onKeyDown={(e) => {
+              if (!["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"].includes(e.key)) {
+                e.stopPropagation();
+              }
+            }}
           >
             <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
             <input
@@ -305,7 +310,7 @@ export const AssignToMultiSelect: Story = {
                 <DropdownMenuCheckboxItem
                   key={n}
                   checked={selected.includes(n)}
-                  // Keep the menu open after each toggle
+                  // Keep the menu open after each toggle (mouse + keyboard Enter/Space)
                   onSelect={(e) => e.preventDefault()}
                   onCheckedChange={() => toggle(n)}
                 >
@@ -323,3 +328,92 @@ export const AssignToMultiSelect: Story = {
     );
   },
 };
+
+/** Multi-select using a native `<input type="checkbox">` inside each menu item. Menu stays open. */
+export const AssignToMultiSelectNativeCheckbox: Story = {
+  render: function Render() {
+    const all = [
+      "Alice Johnson",
+      "Bob Williams",
+      "Charlie Brown",
+      "Diana Prince",
+      "Ethan Hunt",
+      "Fiona Gallagher",
+      "George Costanza",
+    ];
+    const [query, setQuery] = React.useState("");
+    const [selected, setSelected] = React.useState<string[]>([]);
+    const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+    const toggle = (n: string) =>
+      setSelected((s) => (s.includes(n) ? s.filter((x) => x !== n) : [...s, n]));
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">
+            Assign to{selected.length ? ` (${selected.length})` : "…"}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              borderBottom: "1px solid hsl(var(--border))",
+              padding: 8,
+              marginBottom: 4,
+            }}
+            onKeyDown={(e) => {
+              if (!["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"].includes(e.key)) {
+                e.stopPropagation();
+              }
+            }}
+          >
+            <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+            <input
+              autoFocus
+              placeholder="Search people..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: 14,
+              }}
+            />
+          </div>
+          <div style={{ maxHeight: 240, overflow: "auto" }}>
+            {filtered.length ? (
+              filtered.map((n) => (
+                <DropdownMenuItem
+                  key={n}
+                  // Keep menu open on click / Enter / Space
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    toggle(n);
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(n)}
+                    onChange={() => toggle(n)}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ marginRight: 8, cursor: "pointer" }}
+                  />
+                  {n}
+                </DropdownMenuItem>
+              ))
+            ) : (
+              <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
+                No results.
+              </div>
+            )}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  },
+};
+
