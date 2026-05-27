@@ -101,13 +101,12 @@ function applyMask(raw: string, mask: string): string {
     if (i >= raw.length) break;
     const re = MASK_TOKENS[m];
     if (re) {
-      if (re.test(raw[i])) {
-        out += raw[i];
-        i++;
-      } else {
-        // skip invalid character
+      while (i < raw.length && !re.test(raw[i])) {
         i++;
       }
+      if (i >= raw.length) break;
+      out += raw[i];
+      i++;
     } else {
       out += m;
       // if user typed the literal, consume it
@@ -122,8 +121,13 @@ function stripMask(display: string, mask: string): string {
   let raw = "";
   let mi = 0;
   for (const ch of display) {
-    // advance past literals in the mask
-    while (mi < mask.length && !MASK_TOKENS[mask[mi]] && mask[mi] === ch) {
+    // advance past literals in the mask, even when the browser input does not
+    // yet contain those literals (for example typing `5` into `(###) ###-####`).
+    while (mi < mask.length && !MASK_TOKENS[mask[mi]]) {
+      if (mask[mi] === ch) {
+        mi++;
+        continue;
+      }
       mi++;
     }
     if (mi >= mask.length) break;
