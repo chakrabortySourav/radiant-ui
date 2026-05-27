@@ -56,10 +56,50 @@ const meta: Meta<typeof DataTable<Payment, unknown>> = {
 export default meta;
 type Story = StoryObj<typeof DataTable<Payment, unknown>>;
 
+// Shared snippets shown in the Docs "Show code" panel. Storybook's auto-source
+// serializes inline functions as `() => {}`; providing explicit source.code
+// keeps the displayed snippet copy-pastable.
+const sharedColumnsSnippet = `const statusVariant = {
+  success: "default",
+  processing: "secondary",
+  pending: "outline",
+  failed: "destructive",
+} as const;
+
+const columns: ColumnDef<Payment>[] = [
+  { accessorKey: "email", header: "Email" },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => badgeCell(row.original.status, statusVariant),
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: ({ row }) =>
+      new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+        .format(row.original.amount),
+  },
+];`;
+
 export const Basic: Story = {
   render: () => (
     <DataTable columns={columns} data={data} searchColumn="email" searchPlaceholder="Filter emails..." />
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `${sharedColumnsSnippet}
+
+<DataTable
+  columns={columns}
+  data={data}
+  searchColumn="email"
+  searchPlaceholder="Filter emails..."
+/>`,
+      },
+    },
+  },
 };
 
 export const WithSelection: Story = {
@@ -72,6 +112,21 @@ export const WithSelection: Story = {
       onSelectionChange={(rows) => console.log("selected:", rows)}
     />
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `${sharedColumnsSnippet}
+
+<DataTable
+  columns={columns}
+  data={data}
+  searchColumn="email"
+  enableRowSelection
+  onSelectionChange={(rows) => console.log("selected:", rows)}
+/>`,
+      },
+    },
+  },
 };
 
 export const WithRowClick: Story = {
@@ -85,6 +140,22 @@ export const WithRowClick: Story = {
       onSelectionChange={(rows) => console.log("selected:", rows)}
     />
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `${sharedColumnsSnippet}
+
+<DataTable
+  columns={columns}
+  data={data}
+  searchColumn="email"
+  enableRowSelection
+  onRowClick={(row) => alert(\`Clicked \${row.email}\`)}
+  onSelectionChange={(rows) => console.log("selected:", rows)}
+/>`,
+      },
+    },
+  },
 };
 
 export const WithRowActions: Story = {
@@ -106,10 +177,50 @@ export const WithRowActions: Story = {
       ]}
     />
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `${sharedColumnsSnippet}
+
+<DataTable
+  columns={columns}
+  data={data}
+  searchColumn="email"
+  enableRowSelection
+  rowActions={[
+    {
+      label: "Copy email",
+      onClick: (r) => navigator.clipboard.writeText(r.email),
+    },
+    {
+      label: "View details",
+      onClick: (r) => alert(JSON.stringify(r, null, 2)),
+    },
+    {
+      label: "Delete",
+      separatorBefore: true,
+      onClick: (r) => console.log("delete", r.id),
+      // disabled accepts a function — combine any conditions:
+      disabled: (r) => ["processing", "success"].includes(r.status),
+    },
+  ]}
+/>`,
+      },
+    },
+  },
 };
 
 export const NoToolbar: Story = {
   render: () => <DataTable columns={columns} data={data} enableColumnVisibility={false} />,
+  parameters: {
+    docs: {
+      source: {
+        code: `${sharedColumnsSnippet}
+
+<DataTable columns={columns} data={data} enableColumnVisibility={false} />`,
+      },
+    },
+  },
 };
 
 export const NoPagination: Story = {
@@ -121,6 +232,20 @@ export const NoPagination: Story = {
       enablePagination={false}
     />
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `${sharedColumnsSnippet}
+
+<DataTable
+  columns={columns}
+  data={data}
+  searchColumn="email"
+  enablePagination={false}
+/>`,
+      },
+    },
+  },
 };
 
 /**
@@ -163,5 +288,28 @@ export const HeaderColumnsNoFilter: Story = {
         ]}
       />
     );
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `${sharedColumnsSnippet}
+
+<DataTable
+  columns={columns}
+  data={data}
+  columnVisibilityPlacement="header"
+  enableRowSelection
+  rowActions={[
+    { label: "Edit", onClick: (r) => console.log("edit", r.id) },
+    {
+      label: "Delete",
+      separatorBefore: true,
+      onClick: (r) => console.log("delete", r.id),
+      disabled: (r) => ["processing", "success"].includes(r.status),
+    },
+  ]}
+/>`,
+      },
+    },
   },
 };
