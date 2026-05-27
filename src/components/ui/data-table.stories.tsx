@@ -1,6 +1,17 @@
+import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { DataTable, badgeCell, type ColumnDef } from "./data-table";
 import { Badge } from "./badge";
+import { DatePicker } from "./date-picker";
+import { Avatar, AvatarFallback } from "./avatar";
+import { Button } from "./button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "./dropdown-menu";
+import { Pencil, Trash2, Search } from "lucide-react";
 
 type Payment = {
   id: string;
