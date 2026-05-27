@@ -130,29 +130,26 @@ export const WithRightIcon: Story = {
 
 /** Input with both leading and trailing icons (password reveal toggle). */
 export const WithBothIcons: Story = {
-  render: () => {
-    const Demo = () => {
-      const [shown, setShown] = React.useState(false);
-      return (
-        <div style={{ maxWidth: 320 }}>
-          <InputGroup
-            leftIcon={<Phone />}
-            rightIcon={
-              <button
-                type="button"
-                onClick={() => setShown((s) => !s)}
-                style={{ pointerEvents: "auto", background: "transparent", border: 0, cursor: "pointer", color: "inherit" }}
-                aria-label={shown ? "Hide" : "Show"}
-              >
-                {shown ? <EyeOff /> : <Eye />}
-              </button>
-            }
-          >
-            <Input type={shown ? "text" : "password"} placeholder="Password" />
-          </InputGroup>
-        </div>
-      );
-    };
-    return <Demo />;
+  render: function Render() {
+    const [shown, setShown] = React.useState(false);
+    return (
+      <div style={{ maxWidth: 320 }}>
+        <InputGroup
+          leftIcon={<Phone />}
+          rightIcon={
+            <button
+              type="button"
+              onClick={() => setShown((s) => !s)}
+              style={{ pointerEvents: "auto", background: "transparent", border: 0, cursor: "pointer", color: "inherit" }}
+              aria-label={shown ? "Hide" : "Show"}
+            >
+              {shown ? <EyeOff /> : <Eye />}
+            </button>
+          }
+        >
+          <Input type={shown ? "text" : "password"} placeholder="Password" />
+        </InputGroup>
+      </div>
+    );
   },
 };
