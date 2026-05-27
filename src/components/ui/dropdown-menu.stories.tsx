@@ -115,29 +115,26 @@ export const WithLeftIcons: Story = {
 
 /** Single-select dropdown where the selected option shows a check on the right. */
 export const SelectedCheckRight: Story = {
-  render: () => {
+  render: function Render() {
     const options = ["Low", "Medium", "High", "Urgent"];
-    const Demo = () => {
-      const [value, setValue] = React.useState("Medium");
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Priority: {value}</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Priority</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {options.map((opt) => (
-              <DropdownMenuItem key={opt} onSelect={() => setValue(opt)}>
-                <span style={{ flex: 1 }}>{opt}</span>
-                {value === opt && <Check style={{ marginLeft: 8, height: 16, width: 16 }} />}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    };
-    return <Demo />;
+    const [value, setValue] = React.useState("Medium");
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">Priority: {value}</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Priority</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {options.map((opt) => (
+            <DropdownMenuItem key={opt} onSelect={() => setValue(opt)}>
+              <span style={{ flex: 1 }}>{opt}</span>
+              {value === opt && <Check style={{ marginLeft: 8, height: 16, width: 16 }} />}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
   },
 };
 
