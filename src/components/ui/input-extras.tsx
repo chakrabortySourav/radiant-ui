@@ -65,8 +65,12 @@ export type FormattedInputProps = LockedProps<
 > & {
   value: string;
   onValueChange: (raw: string) => void;
-  /** Transform the raw value into the display string. */
-  format?: (raw: string) => string;
+  /**
+   * Transform the raw value into the display string. Returning `undefined`
+   * (or nothing) falls back to the raw value, so consumers can pass partial
+   * formatters without TypeScript complaining about a missing return.
+   */
+  format?: (raw: string) => string | undefined | void;
   /** Strip the display string back to the raw value before storing. */
   parse?: (display: string) => string;
 };
