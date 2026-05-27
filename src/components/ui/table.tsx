@@ -29,11 +29,17 @@ TableBody.displayName = "TableBody";
 
 export const TableRow = React.forwardRef<
   HTMLTableRowElement,
-  LockedProps<React.HTMLAttributes<HTMLTableRowElement>>
->((props, ref) => (
+  LockedProps<React.HTMLAttributes<HTMLTableRowElement>> & {
+    /** Adds a `group/row` class so cells can react with `group-hover/row:` utilities. */
+    groupHover?: boolean;
+  }
+>(({ groupHover, ...props }, ref) => (
   <tr
     ref={ref}
-    className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+    className={
+      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted" +
+      (groupHover ? " group/row" : "")
+    }
     {...stripStyleProps(props)}
   />
 ));

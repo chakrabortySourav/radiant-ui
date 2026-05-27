@@ -108,6 +108,38 @@ export const DropdownMenuRadioItem = React.forwardRef<
 ));
 DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName;
 
+export const DropdownMenuSubTrigger = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger>> & {
+    inset?: boolean;
+  }
+>(({ inset, children, ...props }, ref) => (
+  <DropdownMenuPrimitive.SubTrigger
+    ref={ref}
+    className={cn(
+      "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent",
+      inset && "pl-8",
+    )}
+    {...stripStyleProps(props)}
+  >
+    {children}
+    <ChevronRight className="ml-auto h-4 w-4" />
+  </DropdownMenuPrimitive.SubTrigger>
+));
+DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
+
+export const DropdownMenuSubContent = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>>
+>((props, ref) => (
+  <DropdownMenuPrimitive.SubContent
+    ref={ref}
+    className="z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg animate-fade-in"
+    {...stripStyleProps(props)}
+  />
+));
+DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName;
+
 export const DropdownMenuShortcut = (
   props: LockedProps<React.HTMLAttributes<HTMLSpanElement>>,
 ) => <span className="ml-auto text-xs tracking-widest opacity-60" {...stripStyleProps(props)} />;

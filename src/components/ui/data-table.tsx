@@ -80,6 +80,13 @@ export interface DataTableProps<TData, TValue>
    *   (and search input) is hidden.
    */
   columnVisibilityPlacement?: "toolbar" | "header";
+
+  /**
+   * When enabled, each row exposes a `group/row` class so cells can use
+   * Tailwind `group-hover/row:` utilities to react to row hover (e.g. show
+   * action buttons only on hover).
+   */
+  enableGroupHover?: boolean;
 }
 
 type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
@@ -139,6 +146,7 @@ export function DataTable<TData, TValue>({
   rowActions,
   rowActionsLabel = "Actions",
   columnVisibilityPlacement = "toolbar",
+  enableGroupHover = false,
   ...rest
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -325,6 +333,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  groupHover={enableGroupHover}
                   onClick={
                     onRowClick ? () => onRowClick(row.original) : undefined
                   }
