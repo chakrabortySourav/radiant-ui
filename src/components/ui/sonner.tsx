@@ -14,14 +14,7 @@ export type ToastPosition =
   | "bottom-right";
 
 export function Toaster({ position = "bottom-right", ...props }: ToasterProps) {
-  let resolvedTheme: "light" | "dark" = "light";
-  try {
-    resolvedTheme = useTheme().resolvedTheme;
-  } catch {
-    if (typeof window !== "undefined") {
-      resolvedTheme = document.documentElement.classList.contains("dark") ? "dark" : "light";
-    }
-  }
+  const { resolvedTheme } = useTheme();
   return (
     <SonnerPrimitive
       theme={resolvedTheme}
