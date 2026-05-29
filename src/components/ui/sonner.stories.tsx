@@ -135,7 +135,7 @@ export const PromiseToast: Story = {
           );
           toast.promise(p, {
             loading: "Loading...",
-            success: (data) => `${data.name} toast has been added`,
+            success: (data: { name: string }) => `${data.name} toast has been added`,
             error: "Error",
           });
         }}
