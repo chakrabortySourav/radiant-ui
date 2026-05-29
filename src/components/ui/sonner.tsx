@@ -1,6 +1,6 @@
 
 import { Toaster as SonnerPrimitive, type ToasterProps as SonnerToasterProps } from "sonner";
-import * as React from "react";
+import { useTheme } from "@/providers/theme-provider";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export type ToasterProps = LockedProps<SonnerToasterProps>;
@@ -14,7 +14,14 @@ export type ToastPosition =
   | "bottom-right";
 
 export function Toaster({ position = "bottom-right", ...props }: ToasterProps) {
-  const { resolvedTheme } = useTheme();
+  let resolvedTheme: "light" | "dark" = "light";
+  try {
+    resolvedTheme = useTheme().resolvedTheme;
+  } catch {
+    if (typeof window !== "undefined") {
+      resolvedTheme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+    }
+  }
   return (
     <SonnerPrimitive
       theme={resolvedTheme}
