@@ -133,4 +133,17 @@ export const MultiSelectWithIcons: Story = {
       </div>
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `<Autocomplete
+  multiple
+  options={frameworksWithIcons}
+  value={value}
+  onChange={setValue}
+  placeholder="Pick multiple..."
+/>`,
+      },
+    },
+  },
 };
