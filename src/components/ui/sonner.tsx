@@ -36,4 +36,4 @@ export function Toaster({ position = "bottom-right", ...props }: ToasterProps) {
   );
 }
 
-export const toast = sonnerToast;
+export const toast: typeof sonnerToast = sonnerToast;
