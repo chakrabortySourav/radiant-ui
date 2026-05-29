@@ -25,6 +25,20 @@ export const SegmentedIcon: Story = {
       />
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `<SegmentedSwitch
+  value={view}
+  onChange={setView}
+  options={[
+    { value: "grid", icon: Grid3x3 },
+    { value: "list", icon: List },
+  ]}
+/>`,
+      },
+    },
+  },
 };
 
 /** Segmented switch with text labels only (e.g. date range). */
@@ -42,6 +56,20 @@ export const SegmentedText: Story = {
       />
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `<SegmentedSwitch
+  value={range}
+  onChange={setRange}
+  options={[
+    { value: "7", label: "7 Days" },
+    { value: "30", label: "30 Days" },
+  ]}
+/>`,
+      },
+    },
+  },
 };
 
 /** Segmented switch with both icon and text. */
@@ -58,5 +86,19 @@ export const SegmentedIconText: Story = {
         ]}
       />
     );
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `<SegmentedSwitch
+  value={view}
+  onChange={setView}
+  options={[
+    { value: "grid", label: "Grid", icon: Grid3x3 },
+    { value: "list", label: "List", icon: List },
+  ]}
+/>`,
+      },
+    },
   },
 };
