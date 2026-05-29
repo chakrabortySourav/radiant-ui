@@ -124,7 +124,8 @@ export const WithAction: Story = {
   },
 };
 
-export const Promise: Story = {
+export const PromiseToast: Story = {
+  name: "Promise",
   render: () => (
     <>
       <Button
