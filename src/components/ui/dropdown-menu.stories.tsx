@@ -83,7 +83,43 @@ export const WithCheckboxes: Story = {
       </DropdownMenu>
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `const [state, setState] = React.useState({ status: true, activity: false, panel: true });
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">View options</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuCheckboxItem
+      checked={state.status}
+      onCheckedChange={(v) => setState((s) => ({ ...s, status: !!v }))}
+    >
+      Status bar
+    </DropdownMenuCheckboxItem>
+    <DropdownMenuCheckboxItem
+      checked={state.activity}
+      onCheckedChange={(v) => setState((s) => ({ ...s, activity: !!v }))}
+    >
+      Activity bar
+    </DropdownMenuCheckboxItem>
+    <DropdownMenuCheckboxItem
+      checked={state.panel}
+      onCheckedChange={(v) => setState((s) => ({ ...s, panel: !!v }))}
+    >
+      Panel
+    </DropdownMenuCheckboxItem>
+  </DropdownMenuContent>
+</DropdownMenu>`,
+      },
+    },
+  },
 };
+
 
 /** Items with leading (left) icons. */
 export const WithLeftIcons: Story = {
@@ -136,7 +172,32 @@ export const SelectedCheckRight: Story = {
       </DropdownMenu>
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `const options = ["Low", "Medium", "High", "Urgent"];
+const [value, setValue] = React.useState("Medium");
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Priority: {value}</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>Priority</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    {options.map((opt) => (
+      <DropdownMenuItem key={opt} onSelect={() => setValue(opt)}>
+        <span style={{ flex: 1 }}>{opt}</span>
+        {value === opt && <Check style={{ marginLeft: 8, height: 16, width: 16 }} />}
+      </DropdownMenuItem>
+    ))}
+  </DropdownMenuContent>
+</DropdownMenu>`,
+      },
+    },
+  },
 };
+
 
 /** Dropdown with a search input that filters items. */
 export const WithSearch: Story = {
@@ -195,7 +256,66 @@ export const WithSearch: Story = {
       </DropdownMenu>
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `const all = [
+  "Alice Johnson",
+  "Bob Williams",
+  "Charlie Brown",
+  "Diana Prince",
+  "Ethan Hunt",
+  "Fiona Gallagher",
+  "George Costanza",
+];
+const [query, setQuery] = React.useState("");
+const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Assign to…</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        borderBottom: "1px solid hsl(var(--border))",
+        padding: "8px",
+        marginBottom: 4,
+      }}
+    >
+      <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+      <input
+        placeholder="Search people..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        style={{
+          flex: 1,
+          border: "none",
+          outline: "none",
+          background: "transparent",
+          fontSize: 14,
+        }}
+      />
+    </div>
+    <div style={{ maxHeight: 240, overflow: "auto" }}>
+      {filtered.length ? (
+        filtered.map((n) => <DropdownMenuItem key={n}>{n}</DropdownMenuItem>)
+      ) : (
+        <div style={{ padding: 12, textAlign: "center", fontSize: 14, opacity: 0.6 }}>
+          No results.
+        </div>
+      )}
+    </div>
+  </DropdownMenuContent>
+</DropdownMenu>`,
+      },
+    },
+  },
 };
+
 
 /** Multi-level (nested) dropdown menu using Sub / SubTrigger / SubContent. */
 export const MultiLevel: Story = {
