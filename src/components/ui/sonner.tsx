@@ -1,6 +1,6 @@
 
 import { Toaster as SonnerPrimitive, type ToasterProps as SonnerToasterProps } from "sonner";
-import { useTheme } from "@/providers/theme-provider";
+import * as React from "react";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export type ToasterProps = LockedProps<SonnerToasterProps>;
