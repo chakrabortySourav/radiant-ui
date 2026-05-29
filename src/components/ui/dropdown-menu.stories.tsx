@@ -447,7 +447,80 @@ export const AssignToMultiSelect: Story = {
       </DropdownMenu>
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `const all = [
+  "Alice Johnson",
+  "Bob Williams",
+  "Charlie Brown",
+  "Diana Prince",
+  "Ethan Hunt",
+  "Fiona Gallagher",
+  "George Costanza",
+];
+const [query, setQuery] = React.useState("");
+const [selected, setSelected] = React.useState<string[]>([]);
+const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+const toggle = (n: string) =>
+  setSelected((s) => (s.includes(n) ? s.filter((x) => x !== n) : [...s, n]));
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">
+      Assign to{selected.length ? \` (\${selected.length})\` : "…"}
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        borderBottom: "1px solid hsl(var(--border))",
+        padding: 8,
+        marginBottom: 4,
+      }}
+      onKeyDown={(e) => {
+        if (!["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"].includes(e.key)) {
+          e.stopPropagation();
+        }
+      }}
+    >
+      <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+      <input
+        autoFocus
+        placeholder="Search people..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        style={{
+          flex: 1,
+          border: "none",
+          outline: "none",
+          background: "transparent",
+          fontSize: 14,
+        }}
+      />
+    </div>
+    <div style={{ maxHeight: 240, overflow: "auto" }}>
+      {filtered.map((n) => (
+        <DropdownMenuCheckboxItem
+          key={n}
+          checked={selected.includes(n)}
+          onSelect={(e) => e.preventDefault()}
+          onCheckedChange={() => toggle(n)}
+        >
+          {n}
+        </DropdownMenuCheckboxItem>
+      ))}
+    </div>
+  </DropdownMenuContent>
+</DropdownMenu>`,
+      },
+    },
+  },
 };
+
 
 /** Multi-select using a native `<input type="checkbox">` inside each menu item. Menu stays open. */
 export const AssignToMultiSelectNativeCheckbox: Story = {
@@ -535,5 +608,86 @@ export const AssignToMultiSelectNativeCheckbox: Story = {
       </DropdownMenu>
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `const all = [
+  "Alice Johnson",
+  "Bob Williams",
+  "Charlie Brown",
+  "Diana Prince",
+  "Ethan Hunt",
+  "Fiona Gallagher",
+  "George Costanza",
+];
+const [query, setQuery] = React.useState("");
+const [selected, setSelected] = React.useState<string[]>([]);
+const filtered = all.filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+const toggle = (n: string) =>
+  setSelected((s) => (s.includes(n) ? s.filter((x) => x !== n) : [...s, n]));
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">
+      Assign to{selected.length ? \` (\${selected.length})\` : "…"}
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        borderBottom: "1px solid hsl(var(--border))",
+        padding: 8,
+        marginBottom: 4,
+      }}
+      onKeyDown={(e) => {
+        if (!["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"].includes(e.key)) {
+          e.stopPropagation();
+        }
+      }}
+    >
+      <Search style={{ height: 16, width: 16, opacity: 0.5 }} />
+      <input
+        autoFocus
+        placeholder="Search people..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        style={{
+          flex: 1,
+          border: "none",
+          outline: "none",
+          background: "transparent",
+          fontSize: 14,
+        }}
+      />
+    </div>
+    <div style={{ maxHeight: 240, overflow: "auto" }}>
+      {filtered.map((n) => (
+        <DropdownMenuItem
+          key={n}
+          onSelect={(e) => {
+            e.preventDefault();
+            toggle(n);
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={selected.includes(n)}
+            onChange={() => toggle(n)}
+            onClick={(e) => e.stopPropagation()}
+            style={{ marginRight: 8, cursor: "pointer" }}
+          />
+          {n}
+        </DropdownMenuItem>
+      ))}
+    </div>
+  </DropdownMenuContent>
+</DropdownMenu>`,
+      },
+    },
+  },
 };
+
 
