@@ -20,15 +20,29 @@ export const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
+export type DialogContentSize = "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
+
+const dialogSizeClasses: Record<DialogContentSize, string> = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  "2xl": "max-w-2xl",
+  "3xl": "max-w-3xl",
+  full: "max-w-[95vw]",
+};
+
 export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>>
->(({ children, ...props }, ref) => (
+  LockedProps<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>> & {
+    size?: DialogContentSize;
+  }
+>(({ children, size = "lg", ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg"
+      className={`fixed left-[50%] top-[50%] z-50 grid w-full ${dialogSizeClasses[size]} translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg`}
       {...stripStyleProps(props)}
     >
       {children}
