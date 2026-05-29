@@ -45,39 +45,73 @@ CardFooter.displayName = "CardFooter";
 
 /**
  * MediaCard — compact horizontal card with a square thumbnail on the left
- * and a title + meta line on the right. Style is locked.
+/**
+ * MediaCard — compact horizontal card with a thumbnail and body area.
+ *
+ * Composable, like `Card`. Compose it from `MediaCardThumbnail`,
+ * `MediaCardBody`, `MediaCardTitle`, and `MediaCardMeta` so consumer apps
+ * can customise layout/content per-slot.
+ *
+ * @example
+ * <MediaCard>
+ *   <MediaCardThumbnail src={thumb} alt="TechWave Solutions" />
+ *   <MediaCardBody>
+ *     <MediaCardTitle>TechWave Solutions</MediaCardTitle>
+ *     <MediaCardMeta>Updated 2 days ago</MediaCardMeta>
+ *   </MediaCardBody>
+ * </MediaCard>
  */
-export interface MediaCardProps
-  extends Omit<LockedProps<React.HTMLAttributes<HTMLDivElement>>, "title"> {
-  thumbnailSrc: string;
-  thumbnailAlt?: string;
-  title: React.ReactNode;
-  meta?: React.ReactNode;
+export const MediaCard = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
+  <div
+    ref={ref}
+    className="flex items-center gap-3 rounded-xl border bg-card p-2 pr-4 text-card-foreground shadow-sm transition-colors hover:bg-accent/30"
+    {...stripStyleProps(props)}
+  />
+));
+MediaCard.displayName = "MediaCard";
+
+export interface MediaCardThumbnailProps
+  extends LockedProps<React.ImgHTMLAttributes<HTMLImageElement>> {
+  src: string;
+  alt?: string;
 }
 
-export const MediaCard = React.forwardRef<HTMLDivElement, MediaCardProps>(
-  ({ thumbnailSrc, thumbnailAlt = "", title, meta, ...props }, ref) => (
-    <div
-      ref={ref}
-      className="flex items-center gap-3 rounded-xl border bg-card p-2 pr-4 text-card-foreground shadow-sm transition-colors hover:bg-accent/30"
-      {...stripStyleProps(props)}
-    >
-      <div className="h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
-        <img
-          src={thumbnailSrc}
-          alt={thumbnailAlt}
-          className="h-full w-full object-cover"
-          loading="lazy"
-        />
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-semibold leading-tight">{title}</div>
-        {meta && (
-          <div className="mt-0.5 truncate text-xs text-muted-foreground">{meta}</div>
-        )}
-      </div>
+export const MediaCardThumbnail = React.forwardRef<HTMLImageElement, MediaCardThumbnailProps>(
+  ({ src, alt = "", ...props }, ref) => (
+    <div className="h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
+      <img
+        ref={ref}
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover"
+        loading="lazy"
+        {...stripStyleProps(props)}
+      />
     </div>
   ),
 );
-MediaCard.displayName = "MediaCard";
-CardFooter.displayName = "CardFooter";
+MediaCardThumbnail.displayName = "MediaCardThumbnail";
+
+export const MediaCardBody = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
+  <div ref={ref} className="min-w-0 flex-1" {...stripStyleProps(props)} />
+));
+MediaCardBody.displayName = "MediaCardBody";
+
+export const MediaCardTitle = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
+  <div
+    ref={ref}
+    className="truncate text-sm font-semibold leading-tight"
+    {...stripStyleProps(props)}
+  />
+));
+MediaCardTitle.displayName = "MediaCardTitle";
+
+export const MediaCardMeta = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
+  <div
+    ref={ref}
+    className="mt-0.5 truncate text-xs text-muted-foreground"
+    {...stripStyleProps(props)}
+  />
+));
+MediaCardMeta.displayName = "MediaCardMeta";
+
