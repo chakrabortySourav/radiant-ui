@@ -74,6 +74,28 @@ export const WithLeftIcons: Story = {
       </div>
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `const frameworksWithIcons = [
+  { value: "next", label: "Next.js", description: "React framework", icon: Rocket },
+  { value: "remix", label: "Remix", icon: Globe },
+  { value: "astro", label: "Astro", icon: Star },
+  { value: "svelte", label: "SvelteKit", icon: Flame },
+  { value: "nuxt", label: "Nuxt", icon: Leaf },
+  { value: "solid", label: "SolidStart", icon: Atom },
+  { value: "qwik", label: "Qwik City", icon: Zap },
+];
+
+<Autocomplete
+  options={frameworksWithIcons}
+  value={value}
+  onChange={setValue}
+  placeholder="Pick a framework..."
+/>`,
+      },
+    },
+  },
 };
 
 export const MultiSelect: Story = {
