@@ -75,6 +75,21 @@ export function ThemeProvider({
 
 export function useTheme(): ThemeContextValue {
   const ctx = React.useContext(ThemeContext);
-  if (!ctx) throw new Error("useTheme must be used within a ThemeProvider");
-  return ctx;
+  if (ctx) return ctx;
+  // Fallback when no ThemeProvider is mounted (e.g. consumers using individual
+  // components without wrapping the app). Reads the current `dark` class on
+  // <html> so toasts/dialogs still match the active theme.
+  const resolvedTheme: "light" | "dark" =
+    typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  return {
+    theme: resolvedTheme,
+    resolvedTheme,
+    setTheme: () => {
+      if (typeof console !== "undefined") {
+        console.warn("[useTheme] setTheme called without a <ThemeProvider>. Ignored.");
+      }
+    },
+  };
 }
