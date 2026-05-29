@@ -209,3 +209,35 @@ export default function Demo() {
     },
   },
 };
+
+export const Position: Story = {
+  render: () => (
+    <>
+      <div className="flex flex-wrap gap-2">
+        {(["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"] as const).map((p) => (
+          <Button key={p} onClick={() => toast(`Position: ${p}`)}>
+            {p}
+          </Button>
+        ))}
+      </div>
+      <Toaster position="top-right" />
+    </>
+  ),
+  parameters: {
+    docs: {
+      source: {
+        code: `import { Toaster, toast } from "@/components/ui/sonner";
+import { Button } from "@/components/ui/button";
+
+export default function Demo() {
+  return (
+    <>
+      <Button onClick={() => toast("Hello")}>Show toast</Button>
+      <Toaster position="top-right" />
+    </>
+  );
+}`,
+      },
+    },
+  },
+};
