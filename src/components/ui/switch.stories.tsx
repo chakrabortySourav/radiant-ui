@@ -28,7 +28,9 @@ export const SegmentedIcon: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<SegmentedSwitch
+        code: `const [view, setView] = React.useState("grid");
+
+<SegmentedSwitch
   value={view}
   onChange={setView}
   options={[
@@ -59,7 +61,9 @@ export const SegmentedText: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<SegmentedSwitch
+        code: `const [range, setRange] = React.useState("30");
+
+<SegmentedSwitch
   value={range}
   onChange={setRange}
   options={[
@@ -90,7 +94,9 @@ export const SegmentedIconText: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<SegmentedSwitch
+        code: `const [view, setView] = React.useState("grid");
+
+<SegmentedSwitch
   value={view}
   onChange={setView}
   options={[
