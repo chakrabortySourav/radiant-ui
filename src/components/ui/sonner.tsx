@@ -1,5 +1,5 @@
 
-import { Toaster as SonnerPrimitive, toast as sonnerToast, type ToasterProps as SonnerToasterProps } from "sonner";
+import { Toaster as SonnerPrimitive, type ToasterProps as SonnerToasterProps } from "sonner";
 import { useTheme } from "@/providers/theme-provider";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
