@@ -32,11 +32,15 @@ const dialogSizeClasses: Record<DialogContentSize, string> = {
   full: "max-w-[95vw]",
 };
 
+export type DialogContentProps = LockedProps<
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+> & {
+  size?: DialogContentSize;
+};
+
 export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>> & {
-    size?: DialogContentSize;
-  }
+  DialogContentProps
 >(({ children, size = "lg", ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
