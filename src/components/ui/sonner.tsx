@@ -5,11 +5,20 @@ import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export type ToasterProps = LockedProps<SonnerToasterProps>;
 
-export function Toaster(props: ToasterProps) {
+export type ToastPosition =
+  | "top-left"
+  | "top-center"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-center"
+  | "bottom-right";
+
+export function Toaster({ position = "bottom-right", ...props }: ToasterProps) {
   const { resolvedTheme } = useTheme();
   return (
     <SonnerPrimitive
       theme={resolvedTheme}
+      position={position}
       className="toaster group"
       toastOptions={{
         classNames: {
