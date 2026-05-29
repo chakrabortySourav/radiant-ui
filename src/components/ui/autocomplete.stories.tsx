@@ -87,6 +87,8 @@ export const WithLeftIcons: Story = {
   { value: "qwik", label: "Qwik City", icon: Zap },
 ];
 
+const [value, setValue] = React.useState("");
+
 <Autocomplete
   options={frameworksWithIcons}
   value={value}
@@ -96,6 +98,7 @@ export const WithLeftIcons: Story = {
       },
     },
   },
+
 };
 
 export const MultiSelect: Story = {
@@ -136,7 +139,9 @@ export const MultiSelectWithIcons: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Autocomplete
+        code: `const [value, setValue] = React.useState<string[]>([]);
+
+<Autocomplete
   multiple
   options={frameworksWithIcons}
   value={value}
@@ -146,4 +151,5 @@ export const MultiSelectWithIcons: Story = {
       },
     },
   },
+
 };
