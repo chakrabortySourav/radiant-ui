@@ -77,3 +77,34 @@ export const AvatarFallback = React.forwardRef<
   />
 ));
 AvatarFallback.displayName = "AvatarFallback";
+
+function getInitials(name?: string): string {
+  if (!name) return "";
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+export interface UserAvatarProps
+  extends LockedProps<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>>,
+    VariantProps<typeof avatarVariants> {
+  src?: string;
+  name?: string;
+  alt?: string;
+}
+
+export const UserAvatar = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Root>,
+  UserAvatarProps
+>(({ size, src, name, alt, ...props }, ref) => {
+  const initials = getInitials(name);
+  const safe = stripStyleProps(props);
+  return (
+    <Avatar ref={ref} size={size} {...safe}>
+      {src ? <AvatarImage size={size} src={src} alt={alt ?? name ?? ""} /> : null}
+      {initials ? <AvatarFallback>{initials}</AvatarFallback> : null}
+    </Avatar>
+  );
+});
+UserAvatar.displayName = "UserAvatar";
