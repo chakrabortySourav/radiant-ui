@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Avatar, AvatarImage, AvatarFallback } from "./avatar";
+import { Avatar, AvatarImage, AvatarFallback, UserAvatar } from "./avatar";
 
 const meta: Meta<typeof Avatar> = { title: "UI/Avatar", component: Avatar };
 export default meta;
@@ -37,6 +37,29 @@ export const Sizes: Story = {
         <AvatarImage size="lg" src="https://github.com/shadcn.png" alt="user" />
         <AvatarFallback>LG</AvatarFallback>
       </Avatar>
+    </div>
+  ),
+};
+
+export const UserAvatarImageOnly: Story = {
+  render: () => <UserAvatar src="https://github.com/shadcn.png" name="Shad CN" />,
+};
+
+export const UserAvatarBothImageAndName: Story = {
+  render: () => (
+    <div className="flex items-center gap-4">
+      <UserAvatar src="https://github.com/shadcn.png" name="Shad CN" />
+      <UserAvatar src="https://broken.example.com/x.png" name="Jane Doe" />
+    </div>
+  ),
+};
+
+export const UserAvatarNameOnly: Story = {
+  render: () => (
+    <div className="flex items-center gap-4">
+      <UserAvatar name="Alice" size="sm" />
+      <UserAvatar name="Bob Marley" size="md" />
+      <UserAvatar name="Charlie Xavier" size="lg" />
     </div>
   ),
 };
