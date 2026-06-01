@@ -160,6 +160,8 @@ export function DataTable<TData, TValue>({
   rowActionsLabel = "Actions",
   columnVisibilityPlacement = "toolbar",
   enableGroupHover = false,
+  stickyHeaderFooter = false,
+  maxHeight,
   ...rest
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
