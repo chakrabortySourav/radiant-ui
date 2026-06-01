@@ -87,6 +87,19 @@ export interface DataTableProps<TData, TValue>
    * action buttons only on hover).
    */
   enableGroupHover?: boolean;
+
+  /**
+   * Make the table header (and pagination footer, if enabled) sticky while the
+   * body scrolls. Combine with `maxHeight` to cap the scrollable region so the
+   * table never exceeds its parent's height.
+   */
+  stickyHeaderFooter?: boolean;
+  /**
+   * Max height for the scrollable table body. Accepts any CSS length
+   * (e.g. `"60vh"`, `"480px"`). Defaults to `"100%"` when `stickyHeaderFooter`
+   * is enabled — the table will fill, but never exceed, its container.
+   */
+  maxHeight?: string;
 }
 
 type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
