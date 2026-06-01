@@ -299,6 +299,69 @@ export function DataTable<TData, TValue>({
     ? "[&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-background [&_thead_tr]:shadow-[inset_0_-1px_0_hsl(var(--border))]"
     : "";
 
+  const tableInner = (
+    <>
+      <TableHeader>
+        {table.getHeaderGroups().map((hg) => (
+          <TableRow key={hg.id}>
+            {hg.headers.map((header) => {
+              const canSort = header.column.getCanSort();
+              return (
+                <TableHead key={header.id}>
+                  {header.isPlaceholder ? null : canSort ? (
+                    <button
+                      type="button"
+                      onClick={header.column.getToggleSortingHandler()}
+                      className="inline-flex items-center gap-1 font-medium hover:text-foreground"
+                    >
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      <ArrowUpDown className="h-3.5 w-3.5 opacity-60" />
+                    </button>
+                  ) : (
+                    flexRender(header.column.columnDef.header, header.getContext())
+                  )}
+                </TableHead>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows.length ? (
+          table.getRowModel().rows.map((row) => (
+            <TableRow
+              key={row.id}
+              data-state={row.getIsSelected() && "selected"}
+              groupHover={enableGroupHover}
+              onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <TableCell
+                  key={cell.id}
+                  onClick={
+                    isInteractiveCol(cell.column.id)
+                      ? (e) => e.stopPropagation()
+                      : undefined
+                  }
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={resolvedColumns.length}>
+              <div className="py-8 text-center text-sm text-muted-foreground">
+                No results.
+              </div>
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </>
+  );
+
   const tableContainer = (
     <div
       className={
@@ -310,76 +373,17 @@ export function DataTable<TData, TValue>({
       {enableColumnVisibility && columnVisibilityPlacement === "header" && (
         <div className="absolute right-2 top-2 z-20">{columnsDropdown}</div>
       )}
-      <div
-        className={
-          stickyHeaderFooter
-            ? "min-h-0 flex-1 overflow-auto " + stickyClasses
-            : ""
-        }
-      >
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((hg) => (
-              <TableRow key={hg.id}>
-                {hg.headers.map((header) => {
-                  const canSort = header.column.getCanSort();
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder ? null : canSort ? (
-                        <button
-                          type="button"
-                          onClick={header.column.getToggleSortingHandler()}
-                          className="inline-flex items-center gap-1 font-medium hover:text-foreground"
-                        >
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                          <ArrowUpDown className="h-3.5 w-3.5 opacity-60" />
-                        </button>
-                      ) : (
-                        flexRender(header.column.columnDef.header, header.getContext())
-                      )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  groupHover={enableGroupHover}
-                  onClick={
-                    onRowClick ? () => onRowClick(row.original) : undefined
-                  }
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      onClick={
-                        isInteractiveCol(cell.column.id)
-                          ? (e) => e.stopPropagation()
-                          : undefined
-                      }
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={resolvedColumns.length}>
-                  <div className="py-8 text-center text-sm text-muted-foreground">
-                    No results.
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      {stickyHeaderFooter ? (
+        <div className={"min-h-0 flex-1 overflow-auto " + stickyClasses}>
+          {/* Render raw <table> so the surrounding overflow-auto is the thead's
+              scroll ancestor (shadcn <Table> adds its own overflow wrapper
+              that would break sticky positioning). */}
+          <table className="w-full caption-bottom text-sm">{tableInner}</table>
+        </div>
+      ) : (
+        <Table>{tableInner}</Table>
+      )}
+
 
       {enablePagination && stickyHeaderFooter && (
         <div className="flex items-center justify-between border-t bg-background px-3 py-2">
