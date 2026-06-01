@@ -295,27 +295,28 @@ export function DataTable<TData, TValue>({
     </DropdownMenu>
   ) : null;
 
-  return (
-    <div className="w-full space-y-4" {...safe}>
-      {showToolbar && (
-        <div className="flex items-center gap-2">
-          {searchColumn && (
-            <Input
-              placeholder={searchPlaceholder}
-              value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ""}
-              onChange={(e) =>
-                table.getColumn(searchColumn)?.setFilterValue(e.target.value)
-              }
-            />
-          )}
-          {enableColumnVisibility && columnVisibilityPlacement === "toolbar" && columnsDropdown}
-        </div>
-      )}
+  const stickyClasses = stickyHeaderFooter
+    ? "[&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-background [&_thead_tr]:shadow-[inset_0_-1px_0_hsl(var(--border))]"
+    : "";
 
-      <div className="relative rounded-md border">
-        {enableColumnVisibility && columnVisibilityPlacement === "header" && (
-          <div className="absolute right-2 top-2 z-10">{columnsDropdown}</div>
-        )}
+  const tableContainer = (
+    <div
+      className={
+        "relative rounded-md border " +
+        (stickyHeaderFooter ? "flex min-h-0 flex-1 flex-col overflow-hidden" : "")
+      }
+      style={stickyHeaderFooter ? { maxHeight: maxHeight ?? "100%" } : undefined}
+    >
+      {enableColumnVisibility && columnVisibilityPlacement === "header" && (
+        <div className="absolute right-2 top-2 z-20">{columnsDropdown}</div>
+      )}
+      <div
+        className={
+          stickyHeaderFooter
+            ? "min-h-0 flex-1 overflow-auto " + stickyClasses
+            : ""
+        }
+      >
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (
@@ -380,12 +381,69 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {enablePagination && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+      {enablePagination && stickyHeaderFooter && (
+        <div className="flex items-center justify-between border-t bg-background px-3 py-2">
+          {enableRowSelection ? (
+            <div className="text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+          ) : (
+            <span />
+          )}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount() || 1}
+            </span>
+            <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+              <ChevronLeft />
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+              <ChevronRight />
+            </Button>
           </div>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div
+      className={
+        stickyHeaderFooter
+          ? "flex h-full w-full flex-col gap-4"
+          : "w-full space-y-4"
+      }
+      {...safe}
+    >
+      {showToolbar && (
+        <div className="flex items-center gap-2">
+          {searchColumn && (
+            <Input
+              placeholder={searchPlaceholder}
+              value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ""}
+              onChange={(e) =>
+                table.getColumn(searchColumn)?.setFilterValue(e.target.value)
+              }
+            />
+          )}
+          {enableColumnVisibility && columnVisibilityPlacement === "toolbar" && columnsDropdown}
+        </div>
+      )}
+
+      {tableContainer}
+
+      {enablePagination && !stickyHeaderFooter && (
+        <div className="flex items-center justify-between">
+          {enableRowSelection ? (
+            <div className="text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+          ) : (
+            <span />
+          )}
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
               Page {table.getState().pagination.pageIndex + 1} of{" "}
