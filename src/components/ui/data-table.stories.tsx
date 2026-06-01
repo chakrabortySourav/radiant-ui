@@ -522,3 +522,25 @@ export const WithGroupHover: Story = {
   },
 };
 
+/**
+ * Sticky header + pagination footer. The body scrolls within a capped height
+ * so the table never exceeds its container. Selection counter is hidden when
+ * `enableRowSelection` is not set.
+ */
+export const StickyHeaderFooter: Story = {
+  render: () => {
+    const bigData = Array.from({ length: 50 }, (_, i) => data[i % data.length]);
+    return (
+      <div style={{ height: 420 }}>
+        <DataTable
+          columns={columns}
+          data={bigData}
+          stickyHeaderFooter
+          enableColumnVisibility={false}
+        />
+      </div>
+    );
+  },
+};
+
+
