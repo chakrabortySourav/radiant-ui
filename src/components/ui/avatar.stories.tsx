@@ -13,6 +13,30 @@ export const Basic: Story = {
     </Avatar>
   ),
 };
+
 export const FallbackOnly: Story = {
-  render: () => (<Avatar><AvatarFallback>AB</AvatarFallback></Avatar>),
+  render: () => (
+    <Avatar>
+      <AvatarFallback>AB</AvatarFallback>
+    </Avatar>
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex items-center gap-4">
+      <Avatar>
+        <AvatarImage size="sm" src="https://github.com/shadcn.png" alt="user" />
+        <AvatarFallback>SM</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarImage size="md" src="https://github.com/shadcn.png" alt="user" />
+        <AvatarFallback>MD</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarImage size="lg" src="https://github.com/shadcn.png" alt="user" />
+        <AvatarFallback>LG</AvatarFallback>
+      </Avatar>
+    </div>
+  ),
 };
