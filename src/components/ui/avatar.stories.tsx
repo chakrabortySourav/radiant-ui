@@ -25,15 +25,15 @@ export const FallbackOnly: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      <Avatar>
+      <Avatar size="sm">
         <AvatarImage size="sm" src="https://github.com/shadcn.png" alt="user" />
         <AvatarFallback>SM</AvatarFallback>
       </Avatar>
-      <Avatar>
+      <Avatar size="md">
         <AvatarImage size="md" src="https://github.com/shadcn.png" alt="user" />
         <AvatarFallback>MD</AvatarFallback>
       </Avatar>
-      <Avatar>
+      <Avatar size="lg">
         <AvatarImage size="lg" src="https://github.com/shadcn.png" alt="user" />
         <AvatarFallback>LG</AvatarFallback>
       </Avatar>
