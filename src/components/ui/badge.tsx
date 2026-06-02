@@ -1,7 +1,7 @@
 /**
  * Design-system wrapper. Raw shadcn lives in `./_shadcn/badge.tsx`.
  */
-import * as React from "react";
+
 import {
   Badge as ShadcnBadge,
   badgeVariants,
