@@ -1,12 +1,12 @@
 /**
  * Design-system wrapper. Raw shadcn lives in `./_shadcn/sonner.tsx`.
  */
-import {
-  Toaster as ShadcnToaster,
-  type ToasterProps as ShadcnToasterProps,
-} from "./_shadcn/sonner";
+import * as React from "react";
+import { Toaster as ShadcnToaster } from "./_shadcn/sonner";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
+// Derive ToasterProps from the component; shadcn no longer exports it.
+type ShadcnToasterProps = React.ComponentProps<typeof ShadcnToaster>;
 export type ToasterProps = LockedProps<ShadcnToasterProps>;
 
 export type ToastPosition =
