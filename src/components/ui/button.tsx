@@ -8,14 +8,17 @@
  * Do not edit that file by hand — update this wrapper instead.
  */
 import * as React from "react";
+import { type VariantProps } from "class-variance-authority";
 import {
   Button as ShadcnButton,
   buttonVariants,
-  type ButtonProps as ShadcnButtonProps,
 } from "./_shadcn/button";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export { buttonVariants };
+
+type ShadcnButtonProps = React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & { asChild?: boolean };
 
 export type ButtonProps = LockedProps<ShadcnButtonProps>;
 
