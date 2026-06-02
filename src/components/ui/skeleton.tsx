@@ -1,4 +1,10 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/skeleton.tsx`.
+ *
+ * Adds DS-specific `size` and `radius` variants on top of raw shadcn.
+ */
 import * as React from "react";
+import { Skeleton as ShadcnSkeleton } from "./_shadcn/skeleton";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export type SkeletonSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -20,15 +26,20 @@ const radiusMap: Record<SkeletonRadius, string> = {
   full: "rounded-full",
 };
 
-export interface SkeletonProps extends LockedProps<React.HTMLAttributes<HTMLDivElement>> {
+export interface SkeletonProps
+  extends LockedProps<React.HTMLAttributes<HTMLDivElement>> {
   size?: SkeletonSize;
   radius?: SkeletonRadius;
 }
 
-export function Skeleton({ size = "md", radius = "md", ...props }: SkeletonProps) {
+export function Skeleton({
+  size = "md",
+  radius = "md",
+  ...props
+}: SkeletonProps) {
   return (
-    <div
-      className={`animate-pulse bg-muted w-full ${sizeMap[size]} ${radiusMap[radius]}`}
+    <ShadcnSkeleton
+      className={`w-full ${sizeMap[size]} ${radiusMap[radius]}`}
       {...stripStyleProps(props)}
     />
   );
