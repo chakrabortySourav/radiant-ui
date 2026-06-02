@@ -1,20 +1,21 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/tooltip.tsx`.
+ */
 import * as React from "react";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import {
+  TooltipProvider as ShadcnTooltipProvider,
+  Tooltip as ShadcnTooltip,
+  TooltipTrigger as ShadcnTooltipTrigger,
+  TooltipContent as ShadcnTooltipContent,
+} from "./_shadcn/tooltip";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
-export const TooltipProvider = TooltipPrimitive.Provider;
-export const Tooltip = TooltipPrimitive.Root;
-export const TooltipTrigger = TooltipPrimitive.Trigger;
+export const TooltipProvider = ShadcnTooltipProvider;
+export const Tooltip = ShadcnTooltip;
+export const TooltipTrigger = ShadcnTooltipTrigger;
 
 export const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>>
->(({ sideOffset = 4, ...props }, ref) => (
-  <TooltipPrimitive.Content
-    ref={ref}
-    sideOffset={sideOffset}
-    className="z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-fade-in"
-    {...stripStyleProps(props)}
-  />
-));
-TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+  React.ElementRef<typeof ShadcnTooltipContent>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTooltipContent>>
+>((props, ref) => <ShadcnTooltipContent ref={ref} {...stripStyleProps(props)} />);
+TooltipContent.displayName = "TooltipContent";
