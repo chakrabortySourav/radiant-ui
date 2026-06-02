@@ -1,15 +1,11 @@
 import * as React from "react";
+import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Button } from "./button";
-import { Input } from "./input";
-import { Separator } from "./separator";
-import { Sheet, SheetContent } from "./sheet";
-import { Skeleton } from "./skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
@@ -119,17 +115,22 @@ export const Sidebar = React.forwardRef<
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
-          data-sidebar="sidebar"
-          data-mobile="true"
-          className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
-          style={{ "--sidebar-width": SIDEBAR_WIDTH_MOBILE } as React.CSSProperties}
-          side={side}
-        >
-          <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+      <SheetPrimitive.Root open={openMobile} onOpenChange={setOpenMobile}>
+        <SheetPrimitive.Portal>
+          <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-black/80" />
+          <SheetPrimitive.Content
+            data-sidebar="sidebar"
+            data-mobile="true"
+            className={cn(
+              "fixed z-50 gap-4 bg-sidebar text-sidebar-foreground p-0 shadow-lg w-[--sidebar-width] inset-y-0 h-full",
+              side === "left" ? "left-0 border-r" : "right-0 border-l",
+            )}
+            style={{ "--sidebar-width": SIDEBAR_WIDTH_MOBILE } as React.CSSProperties}
+          >
+            <div className="flex h-full w-full flex-col">{children}</div>
+          </SheetPrimitive.Content>
+        </SheetPrimitive.Portal>
+      </SheetPrimitive.Root>
     );
   }
 
@@ -167,13 +168,20 @@ export const Sidebar = React.forwardRef<
 });
 Sidebar.displayName = "Sidebar";
 
-export const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.ComponentProps<typeof Button>>(({ className, onClick, ...props }, ref) => {
+export const SidebarTrigger = React.forwardRef<HTMLButtonElement, React.ComponentProps<"button">>(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar } = useSidebar();
   return (
-    <Button ref={ref} variant="ghost" size="icon" className={cn("h-7 w-7", className)} onClick={(e) => { onClick?.(e); toggleSidebar(); }} {...props}>
-      <PanelLeft />
+    <button
+      ref={ref}
+      type="button"
+      data-sidebar="trigger"
+      onClick={(e) => { onClick?.(e); toggleSidebar(); }}
+      className={cn("inline-flex h-7 w-7 items-center justify-center rounded-md text-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", className)}
+      {...props}
+    >
+      <PanelLeft className="h-4 w-4" />
       <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    </button>
   );
 });
 SidebarTrigger.displayName = "SidebarTrigger";
@@ -203,8 +211,13 @@ export const SidebarInset = React.forwardRef<HTMLDivElement, React.ComponentProp
 ));
 SidebarInset.displayName = "SidebarInset";
 
-export const SidebarInput = React.forwardRef<React.ElementRef<typeof Input>, React.ComponentProps<typeof Input>>(({ className, ...props }, ref) => (
-  <Input ref={ref} data-sidebar="input" className={cn("h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring", className)} {...props} />
+export const SidebarInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(({ className, ...props }, ref) => (
+  <input
+    ref={ref}
+    data-sidebar="input"
+    className={cn("flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring placeholder:text-muted-foreground", className)}
+    {...props}
+  />
 ));
 SidebarInput.displayName = "SidebarInput";
 
@@ -218,8 +231,8 @@ export const SidebarFooter = React.forwardRef<HTMLDivElement, React.ComponentPro
 ));
 SidebarFooter.displayName = "SidebarFooter";
 
-export const SidebarSeparator = React.forwardRef<React.ElementRef<typeof Separator>, React.ComponentProps<typeof Separator>>(({ className, ...props }, ref) => (
-  <Separator ref={ref} data-sidebar="separator" className={cn("mx-2 w-auto bg-sidebar-border", className)} {...props} />
+export const SidebarSeparator = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(({ className, ...props }, ref) => (
+  <div ref={ref} role="separator" data-sidebar="separator" className={cn("mx-2 h-px w-auto shrink-0 bg-sidebar-border", className)} {...props} />
 ));
 SidebarSeparator.displayName = "SidebarSeparator";
 
@@ -322,8 +335,8 @@ export const SidebarMenuSkeleton = React.forwardRef<HTMLDivElement, React.Compon
   const width = React.useMemo(() => `${Math.floor(Math.random() * 40) + 50}%`, []);
   return (
     <div ref={ref} data-sidebar="menu-skeleton" className={cn("rounded-md h-8 flex gap-2 px-2 items-center", className)} {...props}>
-      {showIcon && <Skeleton className="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />}
-      <Skeleton className="h-4 flex-1 max-w-[--skeleton-width]" data-sidebar="menu-skeleton-text" style={{ "--skeleton-width": width } as React.CSSProperties} />
+      {showIcon && <div className="size-4 rounded-md animate-pulse bg-sidebar-accent" data-sidebar="menu-skeleton-icon" />}
+      <div className="h-4 flex-1 max-w-[--skeleton-width] rounded-md animate-pulse bg-sidebar-accent" data-sidebar="menu-skeleton-text" style={{ "--skeleton-width": width } as React.CSSProperties} />
     </div>
   );
 });
