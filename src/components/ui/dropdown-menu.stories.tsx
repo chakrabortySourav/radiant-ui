@@ -9,9 +9,9 @@ import {
   Plus,
   Search,
   Check,
-  Github,
-  Twitter,
-  Facebook,
+  Code as Github,
+  MessageCircle as Twitter,
+  Share2 as Facebook,
 } from "lucide-react";
 import {
   DropdownMenu,

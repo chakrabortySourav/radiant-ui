@@ -13,8 +13,10 @@ import {
   SheetFooter as ShadcnSheetFooter,
   SheetTitle as ShadcnSheetTitle,
   SheetDescription as ShadcnSheetDescription,
-  type SheetContentProps as ShadcnSheetContentProps,
 } from "./_shadcn/sheet";
+
+// Derive SheetContentProps from the component; shadcn no longer exports it.
+type ShadcnSheetContentProps = React.ComponentPropsWithoutRef<typeof ShadcnSheetContent>;
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export const Sheet = ShadcnSheet;
