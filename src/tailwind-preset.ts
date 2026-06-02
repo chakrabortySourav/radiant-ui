@@ -9,7 +9,7 @@ import type { Config } from "tailwindcss";
  *   export default { presets: [preset], content: [...] };
  */
 const preset = {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [],
   theme: {
     container: {

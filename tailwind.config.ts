@@ -6,7 +6,7 @@ import preset from "./src/tailwind-preset";
  * Consumers should extend `@company/ui-library/tailwind-preset` instead.
  */
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   presets: [preset],
   content: [
     "./src/**/*.{ts,tsx}",
