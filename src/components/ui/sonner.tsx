@@ -1,9 +1,13 @@
-
-import { Toaster as SonnerPrimitive, type ToasterProps as SonnerToasterProps } from "sonner";
-import { useTheme } from "@/providers/theme-provider";
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/sonner.tsx`.
+ */
+import {
+  Toaster as ShadcnToaster,
+  type ToasterProps as ShadcnToasterProps,
+} from "./_shadcn/sonner";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
-export type ToasterProps = LockedProps<SonnerToasterProps>;
+export type ToasterProps = LockedProps<ShadcnToasterProps>;
 
 export type ToastPosition =
   | "top-left"
@@ -14,24 +18,10 @@ export type ToastPosition =
   | "bottom-right";
 
 export function Toaster({ position = "bottom-right", ...props }: ToasterProps) {
-  const { resolvedTheme } = useTheme();
   return (
-    <SonnerPrimitive
-      theme={resolvedTheme}
+    <ShadcnToaster
       position={position}
-      className="toaster group"
-      toastOptions={{
-        classNames: {
-          toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-muted-foreground",
-          actionButton:
-            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton:
-            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
-        },
-      }}
-      {...stripStyleProps(props as object) as SonnerToasterProps}
+      {...(stripStyleProps(props as object) as ShadcnToasterProps)}
     />
   );
 }

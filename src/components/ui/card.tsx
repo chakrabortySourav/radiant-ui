@@ -1,4 +1,15 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/card.tsx`.
+ */
 import * as React from "react";
+import {
+  Card as ShadcnCard,
+  CardHeader as ShadcnCardHeader,
+  CardTitle as ShadcnCardTitle,
+  CardDescription as ShadcnCardDescription,
+  CardContent as ShadcnCardContent,
+  CardFooter as ShadcnCardFooter,
+} from "./_shadcn/card";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 type DivProps = LockedProps<React.HTMLAttributes<HTMLDivElement>>;
@@ -6,61 +17,39 @@ type HeadingProps = LockedProps<React.HTMLAttributes<HTMLHeadingElement>>;
 type ParaProps = LockedProps<React.HTMLAttributes<HTMLParagraphElement>>;
 
 export const Card = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <div
-    ref={ref}
-    className="rounded-lg border bg-card text-card-foreground shadow-sm"
-    {...stripStyleProps(props)}
-  />
+  <ShadcnCard ref={ref} {...stripStyleProps(props)} />
 ));
 Card.displayName = "Card";
 
 export const CardHeader = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <div ref={ref} className="flex flex-col space-y-1.5 p-6" {...stripStyleProps(props)} />
+  <ShadcnCardHeader ref={ref} {...stripStyleProps(props)} />
 ));
 CardHeader.displayName = "CardHeader";
 
 export const CardTitle = React.forwardRef<HTMLHeadingElement, HeadingProps>((props, ref) => (
-  <h3
-    ref={ref}
-    className="text-2xl font-semibold leading-none tracking-tight"
-    {...stripStyleProps(props)}
-  />
+  <ShadcnCardTitle ref={ref} {...stripStyleProps(props)} />
 ));
 CardTitle.displayName = "CardTitle";
 
 export const CardDescription = React.forwardRef<HTMLParagraphElement, ParaProps>((props, ref) => (
-  <p ref={ref} className="text-sm text-muted-foreground" {...stripStyleProps(props)} />
+  <ShadcnCardDescription ref={ref} {...stripStyleProps(props)} />
 ));
 CardDescription.displayName = "CardDescription";
 
 export const CardContent = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <div ref={ref} className="p-6 pt-0" {...stripStyleProps(props)} />
+  <ShadcnCardContent ref={ref} {...stripStyleProps(props)} />
 ));
 CardContent.displayName = "CardContent";
 
 export const CardFooter = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <div ref={ref} className="flex items-center p-6 pt-0" {...stripStyleProps(props)} />
+  <ShadcnCardFooter ref={ref} {...stripStyleProps(props)} />
 ));
 CardFooter.displayName = "CardFooter";
 
-/**
- * MediaCard — compact horizontal card with a square thumbnail on the left
-/**
- * MediaCard — compact horizontal card with a thumbnail and body area.
- *
- * Composable, like `Card`. Compose it from `MediaCardThumbnail`,
- * `MediaCardBody`, `MediaCardTitle`, and `MediaCardMeta` so consumer apps
- * can customise layout/content per-slot.
- *
- * @example
- * <MediaCard>
- *   <MediaCardThumbnail src={thumb} alt="TechWave Solutions" />
- *   <MediaCardBody>
- *     <MediaCardTitle>TechWave Solutions</MediaCardTitle>
- *     <MediaCardMeta>Updated 2 days ago</MediaCardMeta>
- *   </MediaCardBody>
- * </MediaCard>
- */
+/* ------------------------------------------------------------------ */
+/* MediaCard — design-system-only composite (no shadcn equivalent).    */
+/* ------------------------------------------------------------------ */
+
 export const MediaCard = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
   <div
     ref={ref}
@@ -114,4 +103,3 @@ export const MediaCardMeta = React.forwardRef<HTMLDivElement, DivProps>((props, 
   />
 ));
 MediaCardMeta.displayName = "MediaCardMeta";
-

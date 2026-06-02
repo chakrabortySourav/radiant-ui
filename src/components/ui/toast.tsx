@@ -1,83 +1,56 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/toast.tsx`.
+ */
 import * as React from "react";
-import * as ToastPrimitives from "@radix-ui/react-toast";
-import { cva, type VariantProps } from "class-variance-authority";
-import { X } from "lucide-react";
+import {
+  ToastProvider as ShadcnToastProvider,
+  ToastViewport as ShadcnToastViewport,
+  Toast as ShadcnToast,
+  ToastTitle as ShadcnToastTitle,
+  ToastDescription as ShadcnToastDescription,
+  ToastClose as ShadcnToastClose,
+  ToastAction as ShadcnToastAction,
+  type ToastActionElement,
+} from "./_shadcn/toast";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
-export const ToastProvider = ToastPrimitives.Provider;
+export const ToastProvider = ShadcnToastProvider;
 
 export const ToastViewport = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Viewport>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>>
->((props, ref) => (
-  <ToastPrimitives.Viewport
-    ref={ref}
-    className="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"
-    {...stripStyleProps(props)}
-  />
-));
-ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
-
-const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all",
-  {
-    variants: {
-      variant: {
-        default: "border bg-background text-foreground",
-        destructive:
-          "destructive group border-destructive bg-destructive text-destructive-foreground",
-      },
-    },
-    defaultVariants: { variant: "default" },
-  },
-);
+  React.ElementRef<typeof ShadcnToastViewport>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnToastViewport>>
+>((props, ref) => <ShadcnToastViewport ref={ref} {...stripStyleProps(props)} />);
+ToastViewport.displayName = "ToastViewport";
 
 export const Toast = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Root>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root>> &
-    VariantProps<typeof toastVariants>
->(({ variant, ...props }, ref) => (
-  <ToastPrimitives.Root
-    ref={ref}
-    className={toastVariants({ variant })}
-    {...stripStyleProps(props)}
-  />
-));
-Toast.displayName = ToastPrimitives.Root.displayName;
+  React.ElementRef<typeof ShadcnToast>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnToast>>
+>((props, ref) => <ShadcnToast ref={ref} {...stripStyleProps(props)} />);
+Toast.displayName = "Toast";
 
 export const ToastTitle = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Title>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>>
->((props, ref) => (
-  <ToastPrimitives.Title ref={ref} className="text-sm font-semibold" {...stripStyleProps(props)} />
-));
-ToastTitle.displayName = ToastPrimitives.Title.displayName;
+  React.ElementRef<typeof ShadcnToastTitle>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnToastTitle>>
+>((props, ref) => <ShadcnToastTitle ref={ref} {...stripStyleProps(props)} />);
+ToastTitle.displayName = "ToastTitle";
 
 export const ToastDescription = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Description>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>>
->((props, ref) => (
-  <ToastPrimitives.Description
-    ref={ref}
-    className="text-sm opacity-90"
-    {...stripStyleProps(props)}
-  />
-));
-ToastDescription.displayName = ToastPrimitives.Description.displayName;
+  React.ElementRef<typeof ShadcnToastDescription>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnToastDescription>>
+>((props, ref) => <ShadcnToastDescription ref={ref} {...stripStyleProps(props)} />);
+ToastDescription.displayName = "ToastDescription";
 
 export const ToastClose = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Close>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>>
->((props, ref) => (
-  <ToastPrimitives.Close
-    ref={ref}
-    className="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none group-hover:opacity-100"
-    toast-close=""
-    {...stripStyleProps(props)}
-  >
-    <X className="h-4 w-4" />
-  </ToastPrimitives.Close>
-));
-ToastClose.displayName = ToastPrimitives.Close.displayName;
+  React.ElementRef<typeof ShadcnToastClose>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnToastClose>>
+>((props, ref) => <ShadcnToastClose ref={ref} {...stripStyleProps(props)} />);
+ToastClose.displayName = "ToastClose";
+
+export const ToastAction = React.forwardRef<
+  React.ElementRef<typeof ShadcnToastAction>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnToastAction>>
+>((props, ref) => <ShadcnToastAction ref={ref} {...stripStyleProps(props)} />);
+ToastAction.displayName = "ToastAction";
 
 export type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
+export type { ToastActionElement };

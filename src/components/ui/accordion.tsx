@@ -1,45 +1,31 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/accordion.tsx`.
+ */
 import * as React from "react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
+import {
+  Accordion as ShadcnAccordion,
+  AccordionItem as ShadcnAccordionItem,
+  AccordionTrigger as ShadcnAccordionTrigger,
+  AccordionContent as ShadcnAccordionContent,
+} from "./_shadcn/accordion";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
-export const Accordion = AccordionPrimitive.Root;
+export const Accordion = ShadcnAccordion;
 
 export const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>>
->((props, ref) => (
-  <AccordionPrimitive.Item ref={ref} className="border-b" {...stripStyleProps(props)} />
-));
+  React.ElementRef<typeof ShadcnAccordionItem>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAccordionItem>>
+>((props, ref) => <ShadcnAccordionItem ref={ref} {...stripStyleProps(props)} />);
 AccordionItem.displayName = "AccordionItem";
 
 export const AccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>>
->(({ children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180"
-      {...stripStyleProps(props)}
-    >
-      {children}
-      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-));
+  React.ElementRef<typeof ShadcnAccordionTrigger>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAccordionTrigger>>
+>((props, ref) => <ShadcnAccordionTrigger ref={ref} {...stripStyleProps(props)} />);
 AccordionTrigger.displayName = "AccordionTrigger";
 
 export const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>>
->(({ children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className="overflow-hidden text-sm data-[state=closed]:animate-out data-[state=open]:animate-in"
-    {...stripStyleProps(props)}
-  >
-    <div className="pb-4 pt-0">{children}</div>
-  </AccordionPrimitive.Content>
-));
+  React.ElementRef<typeof ShadcnAccordionContent>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAccordionContent>>
+>((props, ref) => <ShadcnAccordionContent ref={ref} {...stripStyleProps(props)} />);
 AccordionContent.displayName = "AccordionContent";
