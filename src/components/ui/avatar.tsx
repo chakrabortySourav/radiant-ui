@@ -1,29 +1,24 @@
+/** Design-system wrapper. Raw shadcn lives in `./_shadcn/avatar.tsx`. */
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cva, type VariantProps } from "class-variance-authority";
+import {
+  Avatar as ShadcnAvatar,
+  AvatarImage as ShadcnAvatarImage,
+  AvatarFallback as ShadcnAvatarFallback,
+} from "./_shadcn/avatar";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
-export const avatarVariants = cva(
-  "relative flex shrink-0 overflow-hidden rounded-full",
-  {
-    variants: {
-      size: {
-        sm: "h-8 w-8",
-        md: "h-10 w-10",
-        lg: "h-14 w-14",
-      },
-    },
-    defaultVariants: { size: "md" },
+export const avatarVariants = cva("relative flex shrink-0 overflow-hidden rounded-full", {
+  variants: {
+    size: { sm: "h-8 w-8", md: "h-10 w-10", lg: "h-14 w-14" },
   },
-);
+  defaultVariants: { size: "md" },
+});
 
 export const avatarImageVariants = cva("aspect-square h-full w-full", {
   variants: {
-    size: {
-      sm: "h-8 w-8",
-      md: "h-10 w-10",
-      lg: "h-14 w-14",
-    },
+    size: { sm: "h-8 w-8", md: "h-10 w-10", lg: "h-14 w-14" },
   },
   defaultVariants: { size: "md" },
 });
@@ -32,16 +27,15 @@ export interface AvatarProps
   extends LockedProps<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>>,
     VariantProps<typeof avatarVariants> {}
 
-export const Avatar = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Root>,
-  AvatarProps
->(({ size, ...props }, ref) => (
-  <AvatarPrimitive.Root
-    ref={ref}
-    className={avatarVariants({ size })}
-    {...stripStyleProps(props)}
-  />
-));
+export const Avatar = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root>, AvatarProps>(
+  ({ size, ...props }, ref) => (
+    <ShadcnAvatar
+      ref={ref}
+      className={avatarVariants({ size })}
+      {...(stripStyleProps(props) as React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>)}
+    />
+  ),
+);
 Avatar.displayName = "Avatar";
 
 export interface AvatarImageProps
@@ -55,12 +49,12 @@ export const AvatarImage = React.forwardRef<
   const safe = stripStyleProps(props);
   const dim = size === "sm" ? 32 : size === "lg" ? 56 : 40;
   return (
-    <AvatarPrimitive.Image
+    <ShadcnAvatarImage
       ref={ref}
       className={avatarImageVariants({ size })}
       width={dim}
       height={dim}
-      {...safe}
+      {...(safe as React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>)}
     />
   );
 });
@@ -69,13 +63,7 @@ AvatarImage.displayName = "AvatarImage";
 export const AvatarFallback = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Fallback>,
   LockedProps<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>>
->((props, ref) => (
-  <AvatarPrimitive.Fallback
-    ref={ref}
-    className="flex h-full w-full items-center justify-center rounded-full bg-muted"
-    {...stripStyleProps(props)}
-  />
-));
+>((props, ref) => <ShadcnAvatarFallback ref={ref} {...stripStyleProps(props)} />);
 AvatarFallback.displayName = "AvatarFallback";
 
 function getInitials(name?: string): string {
