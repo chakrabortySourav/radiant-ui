@@ -1,9 +1,12 @@
-import * as React from "react";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/style.css";
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/calendar.tsx`.
+ */
+import { Calendar as ShadcnCalendar, type CalendarProps as ShadcnCalendarProps } from "./_shadcn/calendar";
+import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+export type CalendarProps = LockedProps<ShadcnCalendarProps>;
 
 export function Calendar(props: CalendarProps) {
-  return <DayPicker showOutsideDays className="rdp p-3" {...props} />;
+  return <ShadcnCalendar {...(stripStyleProps(props as object) as ShadcnCalendarProps)} />;
 }
+Calendar.displayName = "Calendar";

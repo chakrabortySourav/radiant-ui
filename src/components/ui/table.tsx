@@ -1,78 +1,69 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/table.tsx`.
+ */
 import * as React from "react";
+import {
+  Table as ShadcnTable,
+  TableHeader as ShadcnTableHeader,
+  TableBody as ShadcnTableBody,
+  TableFooter as ShadcnTableFooter,
+  TableRow as ShadcnTableRow,
+  TableHead as ShadcnTableHead,
+  TableCell as ShadcnTableCell,
+  TableCaption as ShadcnTableCaption,
+} from "./_shadcn/table";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
+import { cn } from "@/lib/utils";
 
 export const Table = React.forwardRef<
-  HTMLTableElement,
-  LockedProps<React.HTMLAttributes<HTMLTableElement>>
->((props, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table ref={ref} className="w-full caption-bottom text-sm" {...stripStyleProps(props)} />
-  </div>
-));
+  React.ElementRef<typeof ShadcnTable>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTable>>
+>((props, ref) => <ShadcnTable ref={ref} {...stripStyleProps(props)} />);
 Table.displayName = "Table";
 
 export const TableHeader = React.forwardRef<
-  HTMLTableSectionElement,
-  LockedProps<React.HTMLAttributes<HTMLTableSectionElement>>
->((props, ref) => (
-  <thead ref={ref} className="[&_tr]:border-b" {...stripStyleProps(props)} />
-));
+  React.ElementRef<typeof ShadcnTableHeader>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTableHeader>>
+>((props, ref) => <ShadcnTableHeader ref={ref} {...stripStyleProps(props)} />);
 TableHeader.displayName = "TableHeader";
 
 export const TableBody = React.forwardRef<
-  HTMLTableSectionElement,
-  LockedProps<React.HTMLAttributes<HTMLTableSectionElement>>
->((props, ref) => (
-  <tbody ref={ref} className="[&_tr:last-child]:border-0" {...stripStyleProps(props)} />
-));
+  React.ElementRef<typeof ShadcnTableBody>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTableBody>>
+>((props, ref) => <ShadcnTableBody ref={ref} {...stripStyleProps(props)} />);
 TableBody.displayName = "TableBody";
 
+export const TableFooter = React.forwardRef<
+  React.ElementRef<typeof ShadcnTableFooter>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTableFooter>>
+>((props, ref) => <ShadcnTableFooter ref={ref} {...stripStyleProps(props)} />);
+TableFooter.displayName = "TableFooter";
+
 export const TableRow = React.forwardRef<
-  HTMLTableRowElement,
-  LockedProps<React.HTMLAttributes<HTMLTableRowElement>> & {
+  React.ElementRef<typeof ShadcnTableRow>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTableRow>> & {
     /** Adds a `group/row` class so cells can react with `group-hover/row:` utilities. */
     groupHover?: boolean;
   }
 >(({ groupHover, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted" +
-      (groupHover ? " group/row" : "")
-    }
-    {...stripStyleProps(props)}
-  />
+  <ShadcnTableRow ref={ref} className={cn(groupHover && "group/row")} {...stripStyleProps(props)} />
 ));
 TableRow.displayName = "TableRow";
 
 export const TableHead = React.forwardRef<
-  HTMLTableCellElement,
-  LockedProps<React.ThHTMLAttributes<HTMLTableCellElement>>
->((props, ref) => (
-  <th
-    ref={ref}
-    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
-    {...stripStyleProps(props)}
-  />
-));
+  React.ElementRef<typeof ShadcnTableHead>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTableHead>>
+>((props, ref) => <ShadcnTableHead ref={ref} {...stripStyleProps(props)} />);
 TableHead.displayName = "TableHead";
 
 export const TableCell = React.forwardRef<
-  HTMLTableCellElement,
-  LockedProps<React.TdHTMLAttributes<HTMLTableCellElement>>
->((props, ref) => (
-  <td
-    ref={ref}
-    className="p-4 align-middle [&:has([role=checkbox])]:pr-0"
-    {...stripStyleProps(props)}
-  />
-));
+  React.ElementRef<typeof ShadcnTableCell>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTableCell>>
+>((props, ref) => <ShadcnTableCell ref={ref} {...stripStyleProps(props)} />);
 TableCell.displayName = "TableCell";
 
 export const TableCaption = React.forwardRef<
-  HTMLTableCaptionElement,
-  LockedProps<React.HTMLAttributes<HTMLTableCaptionElement>>
->((props, ref) => (
-  <caption ref={ref} className="mt-4 text-sm text-muted-foreground" {...stripStyleProps(props)} />
-));
+  React.ElementRef<typeof ShadcnTableCaption>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnTableCaption>>
+>((props, ref) => <ShadcnTableCaption ref={ref} {...stripStyleProps(props)} />);
 TableCaption.displayName = "TableCaption";
