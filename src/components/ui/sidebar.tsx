@@ -11,17 +11,22 @@ import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export const useSidebar = Raw.useSidebar;
 
-/** Create a wrapper that forwards refs and strips style props. */
-function lock<T extends React.ForwardRefExoticComponent<any>>(
+/**
+ * Create a wrapper that strips style props.
+ *
+ * shadcn v2 components are plain function components (no forwardRef); refs
+ * are accepted as a regular prop in React 19. We pass props through verbatim
+ * minus className/style.
+ */
+function lock<T extends React.ComponentType<any>>(
   Component: T,
   displayName: string,
 ) {
-  type Props = React.ComponentPropsWithoutRef<T>;
-  type Ref = React.ElementRef<T>;
-  const Wrapped = React.forwardRef<Ref, LockedProps<Props>>((props, ref) => {
-    const Comp = Component as unknown as React.ComponentType<any>;
-    return <Comp ref={ref} {...stripStyleProps(props as object)} />;
-  });
+  type Props = React.ComponentProps<T>;
+  const Wrapped = (props: LockedProps<Props>) => {
+    const Comp = Component as React.ComponentType<any>;
+    return <Comp {...stripStyleProps(props as object)} />;
+  };
   Wrapped.displayName = displayName;
   return Wrapped;
 }
