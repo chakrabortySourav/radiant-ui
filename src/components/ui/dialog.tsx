@@ -1,24 +1,32 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/dialog.tsx`.
+ */
 import * as React from "react";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+import {
+  Dialog as ShadcnDialog,
+  DialogTrigger as ShadcnDialogTrigger,
+  DialogPortal as ShadcnDialogPortal,
+  DialogClose as ShadcnDialogClose,
+  DialogOverlay as ShadcnDialogOverlay,
+  DialogContent as ShadcnDialogContent,
+  DialogHeader as ShadcnDialogHeader,
+  DialogFooter as ShadcnDialogFooter,
+  DialogTitle as ShadcnDialogTitle,
+  DialogDescription as ShadcnDialogDescription,
+} from "./_shadcn/dialog";
+import { cn } from "@/lib/utils";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
-export const Dialog = DialogPrimitive.Root;
-export const DialogTrigger = DialogPrimitive.Trigger;
-export const DialogPortal = DialogPrimitive.Portal;
-export const DialogClose = DialogPrimitive.Close;
+export const Dialog = ShadcnDialog;
+export const DialogTrigger = ShadcnDialogTrigger;
+export const DialogPortal = ShadcnDialogPortal;
+export const DialogClose = ShadcnDialogClose;
 
 export const DialogOverlay = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Overlay>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>>
->((props, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
-    {...stripStyleProps(props)}
-  />
-));
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
+  React.ElementRef<typeof ShadcnDialogOverlay>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDialogOverlay>>
+>((props, ref) => <ShadcnDialogOverlay ref={ref} {...stripStyleProps(props)} />);
+DialogOverlay.displayName = "DialogOverlay";
 
 export type DialogContentSize = "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
 
@@ -33,72 +41,41 @@ const dialogSizeClasses: Record<DialogContentSize, string> = {
 };
 
 export type DialogContentProps = LockedProps<
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+  React.ComponentPropsWithoutRef<typeof ShadcnDialogContent>
 > & {
   size?: DialogContentSize;
 };
 
 export const DialogContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ElementRef<typeof ShadcnDialogContent>,
   DialogContentProps
->(({ children, size = "lg", ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={`fixed left-[50%] top-[50%] z-50 grid w-full ${dialogSizeClasses[size]} translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg`}
-      {...stripStyleProps(props)}
-    >
-      {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
-      </DialogPrimitive.Close>
-    </DialogPrimitive.Content>
-  </DialogPortal>
+>(({ size = "lg", ...props }, ref) => (
+  <ShadcnDialogContent
+    ref={ref}
+    className={cn(dialogSizeClasses[size])}
+    {...stripStyleProps(props)}
+  />
 ));
-DialogContent.displayName = DialogPrimitive.Content.displayName;
+DialogContent.displayName = "DialogContent";
 
 export const DialogHeader = (
   props: LockedProps<React.HTMLAttributes<HTMLDivElement>>,
-) => (
-  <div
-    className="flex flex-col space-y-1.5 text-center sm:text-left"
-    {...stripStyleProps(props)}
-  />
-);
+) => <ShadcnDialogHeader {...stripStyleProps(props)} />;
 DialogHeader.displayName = "DialogHeader";
 
 export const DialogFooter = (
   props: LockedProps<React.HTMLAttributes<HTMLDivElement>>,
-) => (
-  <div
-    className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"
-    {...stripStyleProps(props)}
-  />
-);
+) => <ShadcnDialogFooter {...stripStyleProps(props)} />;
 DialogFooter.displayName = "DialogFooter";
 
 export const DialogTitle = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Title>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>
->((props, ref) => (
-  <DialogPrimitive.Title
-    ref={ref}
-    className="text-lg font-semibold leading-none tracking-tight"
-    {...stripStyleProps(props)}
-  />
-));
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
+  React.ElementRef<typeof ShadcnDialogTitle>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDialogTitle>>
+>((props, ref) => <ShadcnDialogTitle ref={ref} {...stripStyleProps(props)} />);
+DialogTitle.displayName = "DialogTitle";
 
 export const DialogDescription = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>>
->((props, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className="text-sm text-muted-foreground"
-    {...stripStyleProps(props)}
-  />
-));
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
+  React.ElementRef<typeof ShadcnDialogDescription>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDialogDescription>>
+>((props, ref) => <ShadcnDialogDescription ref={ref} {...stripStyleProps(props)} />);
+DialogDescription.displayName = "DialogDescription";

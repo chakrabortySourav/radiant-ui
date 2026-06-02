@@ -1,79 +1,66 @@
+/**
+ * Design-system wrapper. Raw shadcn lives in `./_shadcn/alert-dialog.tsx`.
+ */
 import * as React from "react";
-import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
+import {
+  AlertDialog as ShadcnAlertDialog,
+  AlertDialogTrigger as ShadcnAlertDialogTrigger,
+  AlertDialogPortal as ShadcnAlertDialogPortal,
+  AlertDialogOverlay as ShadcnAlertDialogOverlay,
+  AlertDialogContent as ShadcnAlertDialogContent,
+  AlertDialogHeader as ShadcnAlertDialogHeader,
+  AlertDialogFooter as ShadcnAlertDialogFooter,
+  AlertDialogTitle as ShadcnAlertDialogTitle,
+  AlertDialogDescription as ShadcnAlertDialogDescription,
+  AlertDialogAction as ShadcnAlertDialogAction,
+  AlertDialogCancel as ShadcnAlertDialogCancel,
+} from "./_shadcn/alert-dialog";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
-import { buttonVariants } from "./button";
 
-export const AlertDialog = AlertDialogPrimitive.Root;
-export const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
-export const AlertDialogPortal = AlertDialogPrimitive.Portal;
+export const AlertDialog = ShadcnAlertDialog;
+export const AlertDialogTrigger = ShadcnAlertDialogTrigger;
+export const AlertDialogPortal = ShadcnAlertDialogPortal;
 
 export const AlertDialogOverlay = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>>
->((props, ref) => (
-  <AlertDialogPrimitive.Overlay
-    ref={ref}
-    className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out"
-    {...stripStyleProps(props)}
-  />
-));
+  React.ElementRef<typeof ShadcnAlertDialogOverlay>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAlertDialogOverlay>>
+>((props, ref) => <ShadcnAlertDialogOverlay ref={ref} {...stripStyleProps(props)} />);
 AlertDialogOverlay.displayName = "AlertDialogOverlay";
 
 export const AlertDialogContent = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Content>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>>
->((props, ref) => (
-  <AlertDialogPortal>
-    <AlertDialogOverlay />
-    <AlertDialogPrimitive.Content
-      ref={ref}
-      className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg"
-      {...stripStyleProps(props)}
-    />
-  </AlertDialogPortal>
-));
+  React.ElementRef<typeof ShadcnAlertDialogContent>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAlertDialogContent>>
+>((props, ref) => <ShadcnAlertDialogContent ref={ref} {...stripStyleProps(props)} />);
 AlertDialogContent.displayName = "AlertDialogContent";
 
 export const AlertDialogHeader = (
   props: LockedProps<React.HTMLAttributes<HTMLDivElement>>,
-) => <div className="flex flex-col space-y-2 text-center sm:text-left" {...stripStyleProps(props)} />;
+) => <ShadcnAlertDialogHeader {...stripStyleProps(props)} />;
 
 export const AlertDialogFooter = (
   props: LockedProps<React.HTMLAttributes<HTMLDivElement>>,
-) => <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2" {...stripStyleProps(props)} />;
+) => <ShadcnAlertDialogFooter {...stripStyleProps(props)} />;
 
 export const AlertDialogTitle = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Title>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>>
->((props, ref) => (
-  <AlertDialogPrimitive.Title ref={ref} className="text-lg font-semibold" {...stripStyleProps(props)} />
-));
+  React.ElementRef<typeof ShadcnAlertDialogTitle>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAlertDialogTitle>>
+>((props, ref) => <ShadcnAlertDialogTitle ref={ref} {...stripStyleProps(props)} />);
 AlertDialogTitle.displayName = "AlertDialogTitle";
 
 export const AlertDialogDescription = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Description>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>>
->((props, ref) => (
-  <AlertDialogPrimitive.Description ref={ref} className="text-sm text-muted-foreground" {...stripStyleProps(props)} />
-));
+  React.ElementRef<typeof ShadcnAlertDialogDescription>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAlertDialogDescription>>
+>((props, ref) => <ShadcnAlertDialogDescription ref={ref} {...stripStyleProps(props)} />);
 AlertDialogDescription.displayName = "AlertDialogDescription";
 
 export const AlertDialogAction = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Action>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>>
->((props, ref) => (
-  <AlertDialogPrimitive.Action ref={ref} className={buttonVariants()} {...stripStyleProps(props)} />
-));
+  React.ElementRef<typeof ShadcnAlertDialogAction>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAlertDialogAction>>
+>((props, ref) => <ShadcnAlertDialogAction ref={ref} {...stripStyleProps(props)} />);
 AlertDialogAction.displayName = "AlertDialogAction";
 
 export const AlertDialogCancel = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>>
->((props, ref) => (
-  <AlertDialogPrimitive.Cancel
-    ref={ref}
-    className={buttonVariants({ variant: "outline" }) + " mt-2 sm:mt-0"}
-    {...stripStyleProps(props)}
-  />
-));
+  React.ElementRef<typeof ShadcnAlertDialogCancel>,
+  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnAlertDialogCancel>>
+>((props, ref) => <ShadcnAlertDialogCancel ref={ref} {...stripStyleProps(props)} />);
 AlertDialogCancel.displayName = "AlertDialogCancel";
