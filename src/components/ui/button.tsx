@@ -9,8 +9,8 @@
  */
 import * as React from "react";
 import { type VariantProps } from "class-variance-authority";
+import { Slot } from "radix-ui";
 import {
-  Button as ShadcnButton,
   buttonVariants,
 } from "./_shadcn/button";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
@@ -23,6 +23,20 @@ type ShadcnButtonProps = React.ComponentProps<"button"> &
 export type ButtonProps = LockedProps<ShadcnButtonProps>;
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (props, ref) => <ShadcnButton ref={ref} {...stripStyleProps(props)} />,
+  (props, ref) => {
+    const { variant = "default", size = "default", asChild = false, ...rest } = stripStyleProps(props);
+    const Comp = asChild ? Slot.Root : "button";
+
+    return (
+      <Comp
+        ref={ref}
+        data-slot="button"
+        data-variant={variant}
+        data-size={size}
+        className={buttonVariants({ variant, size })}
+        {...rest}
+      />
+    );
+  },
 );
 Button.displayName = "Button";
