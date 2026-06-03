@@ -13,6 +13,7 @@ import { Slot } from "radix-ui";
 import {
   buttonVariants,
 } from "./_shadcn/button";
+import { cn } from "@/lib/utils";
 import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export { buttonVariants };
@@ -33,7 +34,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         data-slot="button"
         data-variant={variant}
         data-size={size}
-        className={buttonVariants({ variant, size })}
+        className={cn(
+          buttonVariants({ variant, size }),
+          // v4: `border` utility no longer ships a color; ensure outline has a visible border in light mode.
+          variant === "outline" && "border-input",
+        )}
         {...rest}
       />
     );
