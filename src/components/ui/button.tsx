@@ -2,8 +2,8 @@
  * Design-system wrapper around the raw shadcn Button.
  *
  * Re-exports `buttonVariants` for internal use (e.g. asChild link styling).
- * Consumers can pass `className` to extend styling; it is merged with the
- * variant classes via `cn` (tailwind-merge), so later classes win.
+ * Consumer `className` / `style` are intentionally blocked so the design
+ * system remains the single source of truth for Button styling.
  *
  * The raw shadcn source lives in `./_shadcn/button.tsx` and is CLI-managed.
  */
@@ -12,15 +12,17 @@ import { type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
 import { buttonVariants } from "./_shadcn/button";
 import { cn } from "@/lib/utils";
+import { type LockedProps, stripStyleProps } from "@/lib/locked-props";
 
 export { buttonVariants };
 
-export type ButtonProps = React.ComponentProps<"button"> &
+export type ButtonProps = LockedProps<React.ComponentProps<"button">> &
   VariantProps<typeof buttonVariants> & { asChild?: boolean };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "default", size = "default", asChild = false, className, ...rest }, ref) => {
+  ({ variant = "default", size = "default", asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot.Root : "button";
+    const rest = stripStyleProps(props);
 
     return (
       <Comp
@@ -28,12 +30,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         data-slot="button"
         data-variant={variant}
         data-size={size}
-        className={cn(
-          buttonVariants({ variant, size }),
-          // v4: `border` utility no longer ships a color; ensure outline has a visible border in light mode.
-          variant === "outline" && "border-input",
-          className,
-        )}
+        className={cn(buttonVariants({ variant, size }))}
         {...rest}
       />
     );
