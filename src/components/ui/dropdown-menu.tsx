@@ -28,53 +28,45 @@ export const DropdownMenuPortal = ShadcnDropdownMenuPortal;
 export const DropdownMenuSub = ShadcnDropdownMenuSub;
 export const DropdownMenuRadioGroup = ShadcnDropdownMenuRadioGroup;
 
-export const DropdownMenuContent = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuContent>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuContent>>
->((props, ref) => <ShadcnDropdownMenuContent ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuContent.displayName = "DropdownMenuContent";
+type ContentProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuContent>>;
+export function DropdownMenuContent(props: ContentProps) {
+  return <ShadcnDropdownMenuContent {...stripStyleProps(props)} />;
+}
 
-export const DropdownMenuItem = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuItem>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuItem>> & { inset?: boolean }
->((props, ref) => <ShadcnDropdownMenuItem ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuItem.displayName = "DropdownMenuItem";
+type ItemProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuItem>>;
+export function DropdownMenuItem(props: ItemProps) {
+  return <ShadcnDropdownMenuItem {...stripStyleProps(props)} />;
+}
 
-export const DropdownMenuLabel = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuLabel>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuLabel>> & { inset?: boolean }
->((props, ref) => <ShadcnDropdownMenuLabel ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuLabel.displayName = "DropdownMenuLabel";
+type LabelProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuLabel>>;
+export function DropdownMenuLabel(props: LabelProps) {
+  return <ShadcnDropdownMenuLabel {...stripStyleProps(props)} />;
+}
 
-export const DropdownMenuSeparator = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuSeparator>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuSeparator>>
->((props, ref) => <ShadcnDropdownMenuSeparator ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuSeparator.displayName = "DropdownMenuSeparator";
+type SeparatorProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuSeparator>>;
+export function DropdownMenuSeparator(props: SeparatorProps) {
+  return <ShadcnDropdownMenuSeparator {...stripStyleProps(props)} />;
+}
 
-export const DropdownMenuCheckboxItem = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuCheckboxItem>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuCheckboxItem>>
->((props, ref) => <ShadcnDropdownMenuCheckboxItem ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuCheckboxItem.displayName = "DropdownMenuCheckboxItem";
+type CheckboxItemProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuCheckboxItem>>;
+export function DropdownMenuCheckboxItem(props: CheckboxItemProps) {
+  return <ShadcnDropdownMenuCheckboxItem {...stripStyleProps(props)} />;
+}
 
-export const DropdownMenuRadioItem = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuRadioItem>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuRadioItem>>
->((props, ref) => <ShadcnDropdownMenuRadioItem ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuRadioItem.displayName = "DropdownMenuRadioItem";
+type RadioItemProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuRadioItem>>;
+export function DropdownMenuRadioItem(props: RadioItemProps) {
+  return <ShadcnDropdownMenuRadioItem {...stripStyleProps(props)} />;
+}
 
-export const DropdownMenuSubTrigger = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuSubTrigger>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuSubTrigger>> & { inset?: boolean }
->((props, ref) => <ShadcnDropdownMenuSubTrigger ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuSubTrigger.displayName = "DropdownMenuSubTrigger";
+type SubTriggerProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuSubTrigger>>;
+export function DropdownMenuSubTrigger(props: SubTriggerProps) {
+  return <ShadcnDropdownMenuSubTrigger {...stripStyleProps(props)} />;
+}
 
-export const DropdownMenuSubContent = React.forwardRef<
-  React.ElementRef<typeof ShadcnDropdownMenuSubContent>,
-  LockedProps<React.ComponentPropsWithoutRef<typeof ShadcnDropdownMenuSubContent>>
->((props, ref) => <ShadcnDropdownMenuSubContent ref={ref} {...stripStyleProps(props)} />);
-DropdownMenuSubContent.displayName = "DropdownMenuSubContent";
+type SubContentProps = LockedProps<React.ComponentProps<typeof ShadcnDropdownMenuSubContent>>;
+export function DropdownMenuSubContent(props: SubContentProps) {
+  return <ShadcnDropdownMenuSubContent {...stripStyleProps(props)} />;
+}
 
 export const DropdownMenuShortcut = (
   props: LockedProps<React.HTMLAttributes<HTMLSpanElement>>,
